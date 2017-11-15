@@ -192,15 +192,8 @@
 		printf("\nDigite o nome do aluno: \n") ;
 		MEN_leSoLetra (nome) ;
 
-		printf("\nDigite a matricula (8 digitos): \n") ;
+		printf("\nDigite o numero da matricula (8 digitos): \n") ;
 		mat = MEN_leMatricula() ;
-		printf("\n") ;
-
-		printf("\nDigite o numero do telefone: \n") ;
-		telefone = MEN_leTelefone() ;
-
-		printf("\nDigite a data de nascimento:\n") ;
-		MEN_leData (&nasc.dia, &nasc.mes, &nasc.ano) ;
 
 		printf("\nDigite o numero do CPF (11 digitos): \n") ;
 		MEN_leCPF(cpf_completo) ;
@@ -212,20 +205,30 @@
 		cpf_completo[3] = '\0' ; 
 		cpf.dig1 = atoi(cpf_completo) ;
 
-		printf("\nDigite a sigla estado:\n") ;
-		MEN_leUF (end.estado) ;
+		printf("\nDigite a data de nascimento:\n") ;
+		MEN_leData (&nasc.dia, &nasc.mes, &nasc.ano) ;
 
-		printf("\nDigite a cidade:\n") ;
-		MEN_leSoLetra (end.cidade) ;
+		printf("\nDigite o numero do telefone (8 ou 9 digitos):\n") ;
+		telefone = MEN_leTelefone() ;
+
+		printf("\nInforme o endereco:");
+		printf("\nDigite o logradouro:\n") ;
+		MEN_leSoLetra (end.rua) ;
+
+		printf("\nDigite o numero:\n") ;
+		end.numero = MEN_leNumero() ;
+		
+		printf("\nDigite o complemento:\n");
+		MEN_leComplemento (end.comp) ;
 
 		printf("\nDigite o bairro:\n") ;
 		MEN_leSoLetra (end.bairro) ;
 
-		printf("\nDigite a rua:\n") ;
-		MEN_leSoLetra (end.rua) ;
+		printf("\nDigite a cidade:\n") ;
+		MEN_leSoLetra (end.cidade) ;		
 
-		printf("\nDigite o complemento:\n");
-		MEN_leComplemento (end.comp) ;
+		printf("\nDigite a sigla estado:\n") ;
+		MEN_leUF (end.estado) ;
 
 		retBusca = CDI_insere(nome, (unsigned int)mat, &cpf, telefone, &nasc, &end);
 
@@ -235,8 +238,11 @@
 			if (retBusca == CDI_CondRetFaltouMemoria)
 				printf("Erro de memoria ao cadastrar.");
 			else
-				printf("\nAluno cadastrado com sucesso!\n");
-	
+			{
+				printf("\nAluno cadastrado com sucesso!\n\n");
+				CDI_imprimeInfo ((unsigned int)mat);
+			}
+		
 		printf("\n\n Pressione qualquer tecla para voltar para o Menu Administrativo.\n\n");
 		getch();
 		system("cls");
@@ -257,7 +263,7 @@
 
 	void MEN_modificaAluno()
 	{
-		char nome[81], cpf_completo[12];
+		char nome[MEN_TAM_STRING], cpf_completo[MEN_TAM_CPF];
 		int mat, telefone, matAnt;
 		Data nasc; 
 		Endereco end;
@@ -378,41 +384,42 @@
 		printf("\nDigite o numero do RG: \n") ;
 		rg = MEN_leNumero() ;
 
-		printf("\nDigite o CPF (11 digitos): \n") ;
+		printf("\nDigite o numero do CPF (11 digitos): \n") ;
 		MEN_leCPF(cpf) ;
 
-		printf("\nDigite a matricula (8 digitos): \n") ;
+		printf("\nDigite o numero da matricula (8 digitos): \n") ;
 		matricula = MEN_leMatricula() ;
-
-		printf("\nDigite o telefone (8 ou 9 digitos): \n") ;
-		telefone = MEN_leTelefone() ;
 
 		printf("\nDigite a data de nascimento: \n") ;
 		MEN_leData (&dia, &mes, &ano) ;
 
-		printf("\nDigite o pais: \n") ;
-		MEN_leSoLetra (pais) ;
+		printf("\nDigite o numero do telefone (8 ou 9 digitos): \n") ;
+		telefone = MEN_leTelefone() ;
 
 		printf("\nDigite o email: \n") ;
 		MEN_leEmail (email) ;
 
-		printf("\nDigite a sigla do estado:\n") ;
-		MEN_leUF (uf) ;
-
-		printf("\nDigite a cidade:\n") ;
-		MEN_leSoLetra (cidade) ;
-		
-		printf("\nDigite o bairro:\n") ;
-		MEN_leSoLetra (bairro) ;
-
-		printf("\nDigite a rua:\n") ;
+		printf("\nInforme o endereco:");
+		printf("\nDigite o logradouro:\n") ;
 		MEN_leSoLetra (rua) ;
 
-		printf("\nDigite a numero:\n") ;
+		printf("\nDigite o numero:\n") ;
 		numero = MEN_leNumero() ;
 
 		printf("\nDigite o complemento:\n") ;
 		MEN_leComplemento (complemento) ;
+
+		printf("\nDigite o bairro:\n") ;
+		MEN_leSoLetra (bairro) ;
+
+		printf("\nDigite a cidade:\n") ;
+		MEN_leSoLetra (cidade) ;
+
+		printf("\nDigite a sigla do estado:\n") ;
+		MEN_leUF (uf) ;
+
+		printf("\nDigite o pais: \n") ;
+		MEN_leSoLetra (pais) ;
 
 		ret = CDO_cadastra(nome, rg, cpf, matricula, email, telefone, dia, mes, ano, pais, uf, cidade, bairro, rua, numero, complemento);
 		if(ret == CDO_CondRetOk)
