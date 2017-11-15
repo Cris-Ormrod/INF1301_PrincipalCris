@@ -310,7 +310,9 @@ LIS_tpCondRet next(List* l)
 		return LIS_CondRetListaVazia;}
 	else if(l->cursor->next == NULL)
 	{
+#ifdef _DEBUG	
 		printf("\n\n <!> Cursor ja posicionado no final da lista <!> \n\n");
+#endif
 		return LIS_CondRetCursorNoFinal;
 	}
 	else l->cursor = l->cursor->next;
@@ -329,7 +331,9 @@ LIS_tpCondRet prev(List* l)
 		return LIS_CondRetListaVazia;}
 	else if(l->cursor->prev == NULL)
 	{
+#ifdef _DEBUG	
 		printf("\n\n <!> Cursor ja posicionado no inicio da lista <!> \n\n");
+#endif
 		return LIS_CondRetCursorNoInicio;
 	}
 	else l->cursor = l->cursor->prev;

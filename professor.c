@@ -706,7 +706,7 @@ PRF_tpCondRet PRF_alteraPais(Prof* professor, char* pais){
 
 	int verificaComplemento(char* complemento){
 		int tamComplemento = strlen(complemento);
-		if(complemento == NULL || tamComplemento == 0 || tamComplemento >= PRF_TAM_STRING)
+		if(/*complemento == NULL || tamComplemento == 0 ||*/ tamComplemento >= PRF_TAM_STRING)
 			return 0; /* if */
 		return 1;
 	} /* Fim função: Verifica complemento*/
@@ -811,7 +811,7 @@ PRF_tpCondRet PRF_alteraPais(Prof* professor, char* pais){
 ***********************************************************************/
 
 	int verificaCpf(char* cpf){
-		if(cpf == NULL || strlen(cpf) != PRF_TAM_CPF)
+		if(cpf == NULL || strlen(cpf) != PRF_TAM_CPF-1)
 			return 0; /* if */
 		return 1;
 	} /* Fim função: Verifica cpf*/

@@ -9,23 +9,25 @@
 *  Arquivo da base de software:
 *
 *  Projeto: Sistema Acadêmico da turma 3WB
-*  Gestor:  Grupo 2/ Grupo 1
-*  Autores:   Bruce Marcellino
-*	      Bruno Miranda Marinho
-*             Flávio Thiago Franco Vaz
-*             João Victor Cerqueira
-*             Matheus Henrique Branco Zeitune
-*             Vinícius Cortat
+*  Gestor:  Grupo 1 / Grupo 2 / Grupo 5
+*  Autores:   Bruce Marcellino (Grupo 1)
+*			  Bruno Miranda Marinho (Grupo 2)
+*             Cristiane Ramalho Guimarães (Grupo 5)
+*             Flávio Thiago Franco Vaz (Grupo 2)
+*             João Victor Cerqueira (Grupo 2)
+*             Matheus Henrique Branco Zeitune (Grupo 2)
+*             Vinícius Cortat (Grupo 2)
 *
 *  $HA Histórico de evolução:
-*     Versão  Autor    Data			Observações
-*     1.01    Bruce	07/10/2017	Reestruturação
-*     1.00    Bruce	06/10/2017	Revisão/finalização
-*     0.05    Bruce	05/10/2017	Modulo professor
-*     0.04    Matheus   04/10/2017  	Revisão menu
-*     0.03    Bruno	02/10/2017	Menu professor
-*     0.02    Flávio	02/10/2017  	Revisão
-*     0.01    Matheus	01/10/2017	Início do desenvolvimento
+*     Versão  Autor         Data		Observações
+*     1.02    Cristiane  15/11/2017	    Revisão                                        
+*     1.01    Bruce	     07/10/2017	    Reestruturação
+*     1.00    Bruce	     06/10/2017	    Revisão/finalização
+*     0.05    Bruce	     05/10/2017	    Modulo professor
+*     0.04    Matheus    04/10/2017  	Revisão menu
+*     0.03    Bruno	     02/10/2017	    Menu professor
+*     0.02    Flávio	 02/10/2017  	Revisão
+*     0.01    Matheus	 01/10/2017	    Início do desenvolvimento
 *
 *  $ED Descrição do módulo
 *     Este módulo implementa o Menu do Sistema Acadêmico a ser desenvolvido.
@@ -54,7 +56,8 @@
 /*Assertivas: Retorno da função: Rertona 1, se os dados são validos.
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
-int MEN_loginAdministrativo();
+	
+	int MEN_loginAdministrativo () ;
 
 /***********************************************************************
 *
@@ -68,7 +71,8 @@ int MEN_loginAdministrativo();
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
 
-int MEN_loginProfessor();
+	int MEN_loginProfessor () ;
+	
 /***********************************************************************
 *
 *  $FC Função: MEN_loginAluno
@@ -81,8 +85,7 @@ int MEN_loginProfessor();
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
 
-
-int MEN_loginAluno(unsigned int *matricula);
+	int MEN_loginAluno ( unsigned int * matricula ) ;
 
 /***********************************************************************
 *
@@ -93,7 +96,7 @@ int MEN_loginAluno(unsigned int *matricula);
 *Parâmentros: endereço da matricula que será recebida pelo usuario.
 ***********************************************************************/
 
-void MEN_adicionaAluno();
+	void MEN_adicionaAluno () ;
 
 /***********************************************************************
 *
@@ -104,7 +107,7 @@ void MEN_adicionaAluno();
 *
 ***********************************************************************/
 
-void MEN_modificaAluno();
+	void MEN_modificaAluno () ;
 
 /***********************************************************************
 *
@@ -118,7 +121,7 @@ void MEN_modificaAluno();
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
 
-void MEN_adicionaProfessor();
+	void MEN_adicionaProfessor () ;
 
 /***********************************************************************
 *
@@ -132,8 +135,8 @@ void MEN_adicionaProfessor();
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
 
-void MEN_modificaProfessor();
+	void MEN_modificaProfessor () ;
 
 
-void MEN_menuGradeCurricular();
+	void MEN_menuGradeCurricular () ;
 

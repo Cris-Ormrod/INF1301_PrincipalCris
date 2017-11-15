@@ -9,23 +9,25 @@
 *  Arquivo da base de software:
 *
 *  Projeto: Sistema Acadêmico da turma 3WB
-*  Gestor:  Grupo 2/ Grupo 1
-*  Autores:   Bruce Marcellino
-*	      Bruno Miranda Marinho
-*             Flávio Thiago Franco Vaz
-*             João Victor Cerqueira
-*             Matheus Henrique Branco Zeitune
-*             Vinícius Cortat
+*  Gestor:  Grupo 1 / Grupo 2 / Grupo 5
+*  Autores:   Bruce Marcellino (Grupo 1)
+*			  Bruno Miranda Marinho (Grupo 2)
+*             Cristiane Ramalho Guimarães (Grupo 5)
+*             Flávio Thiago Franco Vaz (Grupo 2)
+*             João Victor Cerqueira (Grupo 2)
+*             Matheus Henrique Branco Zeitune (Grupo 2)
+*             Vinícius Cortat (Grupo 2)
 *
 *  $HA Histórico de evolução:
-*     Versão  Autor    Data			Observações
-*     1.01    Bruce	07/10/2017	Reestruturação
-*     1.00    Bruce	06/10/2017	Revisão/finalização
-*     0.05    Bruce	05/10/2017	Modulo professor
-*     0.04    Matheus   04/10/2017  	Revisão menu
-*     0.03    Bruno	02/10/2017	Menu professor
-*     0.02    Flávio	02/10/2017  	Revisão
-*     0.01    Matheus	01/10/2017	Início do desenvolvimento
+*     Versão  Autor         Data		Observações
+*     1.02    Cristiane  15/11/2017     Revisão/Reestruturação
+*     1.01    Bruce	     07/10/2017	    Reestruturação
+*     1.00    Bruce	     06/10/2017     Revisão/finalização
+*     0.05    Bruce	     05/10/2017	    Modulo professor
+*     0.04    Matheus    04/10/2017  	Revisão menu
+*     0.03    Bruno      02/10/2017	    Menu professor
+*     0.02    Flávio	 02/10/2017  	Revisão
+*     0.01    Matheus	 01/10/2017	    Início do desenvolvimento
 *
 *  $ED Descrição do módulo
 *     Este módulo implementa o Menu do Sistema Acadêmico a ser desenvolvido.
@@ -35,6 +37,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h>
 
 #include "aluno.h"
 #include "corpodiscente.h"
@@ -42,9 +45,6 @@
 #include "gradeCurricular.h"
 #include "HISTORICO.H"
 #include "menu.h"
-
-
-
 
 /***********************************************************************
 *
@@ -58,50 +58,50 @@
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
 
-void menuAluno()
-{
-	int opcao = 0;
-	unsigned int matricula;
-	if(MEN_loginAluno(&matricula) == 1) // Se volta 1, ok.
+	void menuAluno()
+	{
+		int opcao = 0;
+		unsigned int matricula;
+		if(MEN_loginAluno(&matricula) == 1) // Se volta 1, ok.
 
-	do{
-		printf("\nMenu Aluno - Matricula: %d\n", matricula);
-		printf("\nDigite 0: sair");
-		printf("\nDigite 1: ver grade curricular");
-		//printf("\nDigite 2: ver horarios");
-		//printf("\nDigite 3: ver nota");
+		do{
+			printf("\nMenu Aluno - Matricula: %d\n", matricula);
+			printf("\nDigite 0: sair");
+			printf("\nDigite 1: ver grade curricular");
+			//printf("\nDigite 2: ver horarios");
+			//printf("\nDigite 3: ver nota");
 		
-		printf("\nDigite 2: modificar dados pessoais");
-		//printf("\nDigite 6: cancelar disciplina");
-		//printf("\nDigite 7: trancar a faculdade");
-		printf("\nDigite 3: ver historico\n");
-		scanf("%d", &opcao);
+			printf("\nDigite 2: modificar dados pessoais");
+			//printf("\nDigite 6: cancelar disciplina");
+			//printf("\nDigite 7: trancar a faculdade");
+			printf("\nDigite 3: ver historico\n");
+			scanf("%d", &opcao);
 
-		switch(opcao)
-		{
-			case 1:
-				system("cls");
-				GRC_mostraTodas();
-				break;
-			case 2:
-				system("cls");
-				MEN_modificaAluno();
-				break;
-
-			case 3:
-				system("cls");
-				HIS_printHistoricoCompleto(matricula);
-				break;
-			default:
-				if(opcao)
-				{
+			switch(opcao)
+			{
+				case 1:
 					system("cls");
-					printf("\n\nOPCAO INVALIDA!!!!!\n\n");
-				}
-				break;
-		}
-	}while(opcao);
-}
+					GRC_mostraTodas();
+					break;
+				case 2:
+					system("cls");
+					MEN_modificaAluno();
+					break;
+
+				case 3:
+					system("cls");
+					HIS_printHistoricoCompleto(matricula);
+					break;
+				default:
+					if(opcao)
+					{
+						system("cls");
+						printf("\n\nOPCAO INVALIDA!!!!!\n\n");
+					}
+					break;
+			}
+		}while(opcao);
+	}
 
 /***********************************************************************
 *
@@ -115,56 +115,55 @@ void menuAluno()
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
 
-void menuProfessor()
-{
-	int opcao = 0;
+	void menuProfessor()
+	{
+		int opcao = 0;
 
-	if(MEN_loginProfessor() == 1) // Se volta 1, ok.
+		if(MEN_loginProfessor() == 1) // Se volta 1, ok.
 
-	do{
-		printf("\nMenu Professor\n");
-		printf("\nDigite 0: sair\n");
-		printf("\nDigite 1: ver grade curricular");
-		//printf("\nDigite X: ver nota");
-		//printf("\nDigite X: ver turmas");
-		printf("\nDigite 5: modificar dados pessoais");
-		scanf("%d", &opcao);
+		do{
+			printf("\nMenu Professor\n");
+			printf("\nDigite 0: sair\n");
+			//printf("\nDigite 1: ver grade curricular");
+			//printf("\nDigite X: ver nota");
+			//printf("\nDigite X: ver turmas");
+			printf("\nDigite 5: modificar dados pessoais");
+			scanf("%d", &opcao);
 
-		switch(opcao)
-		{	
-			case 1:
-				system("cls");
-				MEN_menuGradeCurricular();
-				break;
-			case 2:
-				system("cls");
-				// Ir menu Aluno. Area onde o aluno realizar o menu
-				break;
-			case 3:
-				system("cls");
-				// Ir menu Aluno. Area onde o aluno realizar o menu
-				break;
-			case 4:
-				system("cls");
-				// Ir menu Aluno. Area onde o aluno realizar o menu
-				break;
-			case 5:
-				system("cls");
-				MEN_modificaProfessor();
-				break;
-			default:
-				if(opcao)
-				{
+			switch(opcao)
+			{	
+	/*			case 1:
 					system("cls");
-					printf("\n\nOPCAO INVALIDA!!!!!\n\n");
-				}
-				break;
-		}
-	}while(opcao);
+					MEN_menuGradeCurricular();
+					break; */
+				case 2:
+					system("cls");
+					// Ir menu Aluno. Area onde o aluno realizar o menu
+					break;
+				case 3:
+					system("cls");
+					// Ir menu Aluno. Area onde o aluno realizar o menu
+					break;
+				case 4:
+					system("cls");
+					// Ir menu Aluno. Area onde o aluno realizar o menu
+					break;
+				case 5:
+					system("cls");
+					MEN_modificaProfessor();
+					break;
+				default:
+					if(opcao)
+					{
+						system("cls");
+						printf("\n\nOPCAO INVALIDA!!!!!\n\n");
+					}
+					break;
+			}
+		}while(opcao);
 
-}
-
-
+	}
+	
 /***********************************************************************
 *
 *  $FC Função: MEN_menuPAdministrativo
@@ -177,149 +176,194 @@ void menuProfessor()
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
 
-void menuPAdministrativo()
-{
-	int opcao = 0, mat;
+	void menuPAdministrativo()
+	{
+		int opcao = 0, mat;
 
-	if(!MEN_loginAdministrativo()){
-		printf("\nErro no login\n");
-		return;
-	}
-	do{
-		printf("\nMenu Administrativo\n");
-		printf("\nDigite 0: sair");
-		printf("\nDigite 1: ver corpo discente");
-		printf("\nDigite 2: ver corpo docente");
-		//printf("\nDigite 4: ver criterio de aprovacao");
-		printf("\nDigite 3: adicionar aluno");
-		printf("\nDigite 4: deletar aluno");
-		printf("\nDigite 5: adicionar professor");
-		printf("\nDigite 6: deletar professor");
-		//printf("\nDigite 9: deletar sala");
-		//printf("\nDigite 10: adicionar sala");
-		//printf("\nDigite 11: deletar turma");
-		//printf("\nDigite 12: adicionar turma");
-		//printf("\nDigite 13: modificar grade");
-		printf("\nDigite 7: modificar dados pessoais de um aluno");
-		printf("\nDigite 8: modificar dados pessoais de um professor");
-		printf("\nDigite 9: limpa corpo discente");
-		printf("\nDigite 10: limpa corpo docente");
-		printf("\nDigite 11: ver grade curricular\n\n");
-		scanf("%d", &opcao);
+		if(!MEN_loginAdministrativo()){
+			printf("\nErro no login\n");
+			return;
+		}
+		do{
+			printf("\n*********** MENU ADMINISTRATIVO ***********\n");
+			
+			printf ("\nALUNO");
+			printf("\nDigite 1: Ver a relacao de alunos.");
+			printf("\nDigite 2: Para cadastrar um aluno.");
+			printf("\nDigite 3: Para modificar os dados pessoais de um aluno.");
+			printf("\nDigite 4: Para deletar um aluno.");
+			printf("\nDigite 5: Para apagar os dados de todos os alunos.");
+			
+			printf ("\n\nPROFESSOR");
+			printf("\nDigite 6: Ver a relacao de professores.");
+			printf("\nDigite 7: Para cadastrar um professor.");
+			printf("\nDigite 8: Para modificar os dados pessoais de um professor.");
+			printf("\nDigite 9: Para deletar um professor.");
+			printf("\nDigite 10: Para apagar os dados de todos os professores.");
+			
+			//printf("\nDigite 9: deletar sala");
+			//printf("\nDigite 10: adicionar sala");
+			//printf("\nDigite 11: deletar turma");
+			//printf("\nDigite 12: adicionar turma");
+			//printf("\nDigite 13: modificar grade");
+			//printf("\nDigite 4: ver criterio de aprovacao");
+			//printf("\nDigite 11: ver grade curricular\n\n");
 
-		switch(opcao)
-		{
-			case 1:
-				//mostra alunos
-				system("cls");
-				CDI_imprime();
-				break;
-			case 2:
-				//mostra professores
-				system("cls");
-				if(CDO_mostraTodos()!=CDO_CondRetOk) printf("Nenhum professor cadastrado!\n");
-				break;
-			case 3:
-				MEN_adicionaAluno();
-				break;
-			case 4:
-				//remove aluno
-				system("cls");
-				printf("\nDigite a matricula: \n");
-				scanf("%d", &mat);
-				CDI_remove(mat);
-				break;
-			case 5:
-				MEN_adicionaProfessor();
-				break;
-			case 6:
-				//retira professor
-				system("cls");
-				printf("\nDigite a matricula: \n");
-				scanf("%d", &mat);
-				if(CDO_buscaPorMatricula(mat)!=CDO_CondRetOk){
-					printf("Professor nao encontrado, nao ha professor com esta matricula.");
+			printf("\n\nDigite 0: Para sair do Menu Administrativo.\n\n");
+
+			scanf("%d", &opcao);
+
+			switch(opcao)
+			{
+				case 1:
+					//mostra relação de alunos
+					system("cls");
+					CDI_imprime();
 					break;
-				}
-				CDO_mostraAtual();
-				CDO_retira();
-				break;
-			case 7:
-				//Altera aluno
-				MEN_modificaAluno();
-				break;
-			case 8:
-				//Altera professor
-				MEN_modificaProfessor();
-				break;
-			case 9:
-				CDI_limpa();
-				break;
-			case 10:
-				CDO_limpa();
-				break;
-			case 11:
-				MEN_menuGradeCurricular();
-				break;
-			default:
-				if(opcao)
-				{
+				case 2:
+					//adiciona um aluno
+					MEN_adicionaAluno();
+					break;
+				case 3:
+					//altera os dados de um aluno
+					MEN_modificaAluno();
+					break;
+				case 4:
+					//remove um aluno
 					system("cls");
-					printf("\n\nOPCAO INVALIDA!!!!!\n\n");
-				}
-				break;
-		}
-	}while(opcao);
-	system("cls");
-}
-
-
-int main(void){
-	int opcao = 0;
-	CDO_cria();
-	CDI_cria();
-	GRC_cria();
-	do{
-		printf("\n*********** SISTEMA ACADEMICO ***********\n");
-		printf("\nDigite 0: para sair");
-		printf("\nDigite 1: ir menu Aluno");
-		printf("\nDigite 2: ir menu Professor");
-		printf("\nDigite 3: ir menu Administrativo\n");
-		scanf("%d", &opcao);
-
-		switch(opcao)
-		{
-			case 0:
-				system("cls");
-				printf("\n\nFechando programa...\n\n");
-				CDO_libera();
-				GRC_libera();
-				exit(0);
-				break;
-			case 1:
-				system("cls");
-				// Ir menu Aluno. Area onde o aluno realizar o menu
-				menuAluno();
-				break;
-			case 2:
-				system("cls");
-				menuProfessor();
-				// Ir menu Professor. Area onde o professor realizar o menu
-				break;
-			case 3:
-				system("cls");
-				menuPAdministrativo();
-				// Ir menu Administrado. Area onde o administrador realizar o menu
-				break;
-			default:
-				if(opcao)
-				{
+					printf("\nDigite a matricula: \n");
+					scanf("%d", &mat);
+					CDI_remove(mat);
+					break;
+				case 5:
+					//remove todos os alunos
+					CDI_limpa();
+					break;
+				case 6:
+					//mostra relação de professores
 					system("cls");
-					printf("\n\nOPCAO INVALIDA!!!!!\n\n");
-				}
-				break;
-		}
-	}while(opcao);
-	return 0;
-}
+					if(CDO_mostraTodos()!=CDO_CondRetOk) 
+						printf("Nenhum professor cadastrado!\n\n");
+					break;
+				case 7:
+					//adiciona um professor
+					MEN_adicionaProfessor();
+					break;
+				case 8:
+					//altera os dados de um professor
+					MEN_modificaProfessor();
+					break;
+				case 9:
+					//remove um professor
+					system("cls");
+					printf("\nDigite a matricula: \n");
+					scanf("%d", &mat);
+					if(CDO_buscaPorMatricula(mat)!=CDO_CondRetOk){
+						printf("Professor nao encontrado, nao ha professor com esta matricula.");
+						break;
+					}
+					CDO_mostraAtual();
+					CDO_retira();
+					break;
+				case 10:
+					//remove todos os professores
+					CDO_limpa();
+					break;
+	/*			case 11:
+					MEN_menuGradeCurricular();
+					break;*/
+				default:
+					if(opcao)
+					{
+						system("cls");
+						printf("\n\nOPCAO INVALIDA! Digite o numero de algumas das opcoes abaixo. \n\n");
+					}
+					break;
+			}
+		}while(opcao);
+		system("cls");
+	}
+
+/***********************************************************************
+*
+*  $FC Função: exibeTelaInicial
+*
+*  $ED Descrição da função
+*		Mostra o menu Administrativo.
+*
+***********************************************************************/
+/*Assertivas: Retorno da função: não há retorno.
+/			 Parâmentros: Estruturas de ponteiros.
+***********************************************************************/
+
+	void exibeTelaInicial() 
+	{
+		printf("**************************************************\n");
+		printf("**                                              **\n");
+		printf("**                                              **\n");
+		printf("**                                              **\n");
+		printf("**     SEJA BEM VINDO AO SISTEMA ACADEMICO      **\n");
+		printf("**                DA TURMA 3WB                  **\n");
+		printf("**           DE PROGRAMACAO MODULAR             **\n");
+		printf("**                                              **\n");
+		printf("**                                              **\n");
+		printf("**                                              **\n");
+		printf("**************************************************\n");
+		printf("\n\n Pressione qualquer tecla para acessar o sistema\n");
+		getch();
+		system("cls");
+	}
+
+
+	int main(void){
+		int opcao = 0;
+		CDO_cria();
+		CDI_cria();
+		GRC_cria();
+
+		exibeTelaInicial();
+
+		do{
+			printf("\n*********** SISTEMA ACADEMICO ***********\n");
+			printf("\nDigite 0: Para sair");
+			printf("\nDigite 1: Ir para Menu do Aluno");
+			printf("\nDigite 2: Ir para Menu do Professor");
+			printf("\nDigite 3: Ir para Menu Administrativo\n\n");
+			scanf("%d", &opcao);
+
+			switch(opcao)
+			{
+				case 0:
+					system("cls");
+					printf("\n\nFechando programa...\n\n");
+					CDO_libera();
+					GRC_libera();
+					exit(0);
+					break;
+				case 1:
+					system("cls");
+					// Ir menu Aluno. Area onde o aluno realizar o menu
+					menuAluno();
+					break;
+				case 2:
+					system("cls");
+					menuProfessor();
+					// Ir menu Professor. Area onde o professor realizar o menu
+					break;
+				case 3:
+					system("cls");
+					menuPAdministrativo();
+					// Ir menu Administrado. Area onde o administrador realizar o menu
+					break;
+				default:
+					if(opcao)
+					{
+						system("cls");
+						printf("\n\nOPCAO INVALIDA!!!!!\n\n");
+					}
+					break;
+			}
+		}while(opcao);
+		return 0;
+	}
 

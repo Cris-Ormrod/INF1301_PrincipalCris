@@ -185,9 +185,9 @@
 		CPF cpf ;
 		CDI_tpCondRet retBusca ;
 
-		printf ("*********** CADASTRO DE ALUNO ***********\n\n") ;
 		system("cls") ;
-		
+		printf ("*********** CADASTRO DE ALUNO ***********\n") ;
+				
 		//adiciona aluno
 		printf("\nDigite o nome do aluno: \n") ;
 		MEN_leSoLetra (nome) ;
@@ -199,9 +199,8 @@
 		printf("\nDigite o numero do telefone: \n") ;
 		telefone = MEN_leTelefone() ;
 
-		printf("\nDigite a data de nascimento: ") ;
+		printf("\nDigite a data de nascimento:\n") ;
 		MEN_leData (&nasc.dia, &nasc.mes, &nasc.ano) ;
-		printf("\n") ;
 
 		printf("\nDigite o numero do CPF (11 digitos): \n") ;
 		MEN_leCPF(cpf_completo) ;
@@ -214,19 +213,19 @@
 		cpf.dig1 = atoi(cpf_completo) ;
 
 		printf("\nDigite a sigla estado:\n") ;
-		MEN_leUF (&end.estado) ;
+		MEN_leUF (end.estado) ;
 
 		printf("\nDigite a cidade:\n") ;
-		MEN_leSoLetra (&end.cidade) ;
+		MEN_leSoLetra (end.cidade) ;
 
 		printf("\nDigite o bairro:\n") ;
-		MEN_leSoLetra (&end.bairro) ;
+		MEN_leSoLetra (end.bairro) ;
 
 		printf("\nDigite a rua:\n") ;
-		MEN_leSoLetra (&end.rua) ;
+		MEN_leSoLetra (end.rua) ;
 
 		printf("\nDigite o complemento:\n");
-		MEN_leComplemento (&end.comp) ;
+		MEN_leComplemento (end.comp) ;
 
 		retBusca = CDI_insere(nome, (unsigned int)mat, &cpf, telefone, &nasc, &end);
 
@@ -238,7 +237,7 @@
 			else
 				printf("\nAluno cadastrado com sucesso!\n");
 	
-		printf("Pressione ENTER para voltar ao menu principal...\n");
+		printf("\n\n Pressione qualquer tecla para voltar para o Menu Administrativo.\n\n");
 		getch();
 		system("cls");
 		return;
@@ -417,12 +416,17 @@
 
 		ret = CDO_cadastra(nome, rg, cpf, matricula, email, telefone, dia, mes, ano, pais, uf, cidade, bairro, rua, numero, complemento);
 		if(ret == CDO_CondRetOk)
-			printf("\nAlteracao realizada com sucesso!\n");
+			printf("\nProfessor cadastrado com sucesso!\n\n");
 		else if(ret == CDO_CondRetFormatoInvalido)
 			printf("\nERRO. Formato de dados invalido.\n");
 		else if(ret == CDO_CondRetIdJaCriado)
 			printf("\nERRO. Ja existe um professor com este valor de identificacao.\n");
 		CDO_mostraAtual();
+
+		printf("\n\n Pressione qualquer tecla para voltar para o Menu Administrativo.\n\n");
+		getch();
+		system("cls");
+		return;
 	}
 
 /***********************************************************************
@@ -654,7 +658,7 @@
 			
 				if (* dia > 31)
 				{
-					printf ("\n   Dia inválido. Digite o dia novamente.\n") ;
+					printf ("\n   Dia invalido. Digite o dia novamente.\n") ;
 					cont = 0 ;
 				}
 			} while ( * dia > 31 ) ;
@@ -688,7 +692,7 @@
 			
 				if (* mes > 12)
 				{
-					printf ("\n   Mes inválido. Digite o mes novamente.") ;
+					printf ("\n   Mes invalido. Digite o mes novamente.") ;
 					cont = 0 ;
 				}
 			} while ( * mes > 12 ) ;
@@ -731,7 +735,7 @@
 		
 			if ( * ano < MEN_MIN_ANO )
 			{
-				printf ("\n   Ano inválido. Digite o ano novamente.") ;
+				printf ("\n   Ano invalido. Digite o ano novamente.") ;
 				cont = 0;
 			}
 
@@ -938,6 +942,8 @@
 		} while ( cont < MEN_TAM_MAT-1 || (a != 13 && cont == MEN_TAM_MAT-1) ); // 13 = Enter
 
 		mat[cont] = '\0' ;
+
+		printf("\n") ;
 
 		return atoi(mat) ;
 
