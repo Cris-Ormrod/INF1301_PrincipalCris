@@ -32,6 +32,17 @@
 *     O menu é a chamada dos modulos por interface.
 ***************************************************************************/
 
+/***** Declarações exportadas pelo módulo *****/
+
+#define  MEN_MIN_ANO  1850
+#define  MEN_TAM_STRING  81
+#define  MEN_TAM_UF 3
+#define  MEN_TAM_CPF 12
+#define  MEN_TAM_MAT 9
+#define  MEN_TAM_TEL 10
+#define  MEN_QTD_EST 27
+
+
 /***********************************************************************
 *
 *  $FC Função: MEN_loginAdministrativo

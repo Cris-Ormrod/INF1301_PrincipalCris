@@ -21,7 +21,7 @@
 *  $HA Histórico de evolução:
 *     Versão  Autor         Data		Observações
 *     1.03    Cristiane  14/11/2017     Reestruturação
-*     1.02    Cristiane  08/11/2017     Revisão/finalização
+*     1.02    Cristiane  08/11/2017     Funções de leitura
 *     1.01    Bruce	     07/10/2017     Reestruturação
 *     1.00    Bruce	     06/10/2017	    Revisão/finalização
 *     0.05    Bruce	     05/10/2017	    Modulo professor
@@ -50,17 +50,20 @@
 
 /***** Declarações encapsuladas pelo módulo *****/
 
-	#define MEN_TAM_STRING 80
+	#define MEN_TAM_STRING 81
 
 
 /*****  Protótipos das funções encapsuladas no módulo  *****/
 
-	void MEN_leCPF ( char * cpf ) ;
-	int MEN_leMatricula ( void ) ;
-	void MEN_leData ( int * dia, int * mes, int * ano ) ;
 	void MEN_leSoLetra ( char * cad_carac ) ;
-	int MEN_leNumero ( void ) ;
+	void MEN_leCPF ( char * cpf ) ;
+	void MEN_leData ( int * dia, int * mes, int * ano ) ;
 	void MEN_leUF ( char * UF ) ;
+	void MEN_leComplemento ( char * comp ) ;
+	void MEN_leEmail ( char * email ) ;
+	int MEN_leMatricula ( void ) ;
+	int MEN_leNumero ( void ) ;
+	int MEN_leTelefone ( void ) ;
 
 /***********************************************************************
 *
@@ -602,11 +605,56 @@
 
 /***********************************************************************
 *
+*  $FC Função: MEN_leSoLetra
+*
+*  $ED Descrição da função
+*	  Efetua a leitura do teclado permitindo digitar letras (maiúscula ou minúscula) e espaço (Space).
+*     Limita a quantidade de caracteres em no máximo 80.
+*     A cadeia de caracteres não pode ficar vazia.     
+*
+***********************************************************************/
+/*Assertivas: 
+/			 
+***********************************************************************/
+
+	void MEN_leSoLetra ( char * cad_carac )
+	{
+		unsigned char a;
+		int cont = 0 ;
+
+		do
+		{
+			a = getch() ;
+			
+			if ( (isalpha(a) || a == ' ') && cont < MEN_TAM_STRING-1 )
+			{			
+				cad_carac [cont] = (char) a ;
+				printf("%c", cad_carac[cont]) ;
+				cont++ ;
+			} 
+			else 
+				if (a==8 && cont) // 8 = BackSpace
+				{
+					printf("\b \b") ;
+					cont-- ;
+					cad_carac [cont] = '\0' ;
+				} /* if */
+		} while ( cont == 0 || (a != 13 && cont <= MEN_TAM_STRING-1) ) ; // 13 = Enter
+
+		cad_carac[cont] = '\0' ;
+
+		printf("\n");
+
+	}
+	
+	
+/***********************************************************************
+*
 *  $FC Função: MEN_leCPF
 *
 *  $ED Descrição da função
-*	  Efetua a leitura do teclado permitindo digitar apenas numeros.
-*     Só finaliza a leitura após digitar, obrigatoriamente, so 11 digitos correspondentes ao CPF.
+*	  Efetua a leitura do teclado permitindo digitar apenas números (1,2,3,4,5,6,7,8,9,0).
+*     Só finaliza a leitura após digitar, obrigatoriamente, so 11 dígitos correspondentes ao CPF.
 *
 ***********************************************************************/
 /*Assertivas: 
@@ -622,7 +670,7 @@
 		{
 			a = getch() ;
 
-			if ( isdigit(a) && cont < 11 )
+			if ( isdigit(a) && cont < MEN_TAM_CPF-1 )
 			{			
 				cpf [cont] = (char) a ;
 				printf("%c", cpf[cont]) ;
@@ -635,7 +683,7 @@
 					cont-- ;
 					cpf[cont] = '\0' ;
 				} /* if */
-		} while ( cont < 11 || (a != 13 && cont == 11) ); // 13 = Enter
+		} while ( cont < MEN_TAM_CPF-1 || (a != 13 && cont == MEN_TAM_CPF-1) ); // 13 = Enter
 
 		cpf[cont] = '\0' ;
 
@@ -644,56 +692,16 @@
 
 /***********************************************************************
 *
-*  $FC Função: MEN_leMatricula
+*  $FC Função: MEN_leData                       
 *
 *  $ED Descrição da função
-*	  Efetua a leitura do teclado permitindo digitar apenas numeros.
-*     Só finaliza a leitura após digitar, obrigatoriamente, so 8 digitos correspondentes a matricula.	
-*
-***********************************************************************/
-/*Assertivas: 
-/			 
-***********************************************************************/
-
-	int MEN_leMatricula ( void )
-	{
-		unsigned char a;
-		char mat[9]; 
-		int cont = 0;
-
-		do
-		{
-			a = getch() ;
-
-			if ( isdigit(a) && cont < 8 )
-			{			
-				mat [cont] = (char) a ;
-				printf("%c", mat[cont]) ;
-				cont++ ;
-			} 
-			else
-				if (a==8 && cont) // 8 = BackSpace
-				{
-					printf("\b \b") ;
-					cont-- ;
-					mat[cont] = '\0' ;
-				} /* if */
-		} while ( cont < 8 || (a != 13 && cont == 8) ); // 13 = Enter
-
-		mat[cont] = '\0' ;
-
-		return atoi(mat);
-
-	}
-
-
-/***********************************************************************
-*
-*  $FC Função: MEN_leData                        !!!CORRIGIR DESCRIÇÃO!!!
-*
-*  $ED Descrição da função
-*	  Efetua a leitura do teclado permitindo digitar apenas numeros.
-*     Só finaliza a leitura após digitar, obrigatoriamente, uma data válida.        		
+*	  Efetua a leitura do teclado permitindo digitar apenas números (1,2,3,4,5,6,7,8,9,0).
+*     Efetua a leitura do dia, obrigatoriamente, menor ou igual 31.
+*     Efetua a leitura do mês, obrigatoriamente, menor ou igual 12.
+*     Verifica se o dia informado ultrapassa o número de dias corresponde ao mês informado, 
+*          caso ultrapasse solicita novamente o dia e o mês. 
+*     Efetua a leitura do ano, obrigatoriamente, maior ou igual a 1850.
+*     Verifica se o ano informado é menor que 1850, caso seja solicita o ano.      		
 *
 ***********************************************************************/
 /*Assertivas: 
@@ -703,11 +711,11 @@
 	void MEN_leData ( int * dia, int * mes, int * ano )
 	{
 		static int maxDias[] = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 } ; 
-		unsigned char a;
-		char D_dia[3], D_mes [3], D_ano [5] , temp; 
+		unsigned char a ;
+		char D_dia[3], D_mes [3], D_ano [5] ; 
 		int cont = 0 ;
 
-		do // verifica se o número do dia bate com o mes informado
+		do // verifica se o número do dia corresponde ao número máximo de dias do mês informado
 		{
 			// DIA
 			do // verifica se o dia é maior que 31
@@ -738,11 +746,11 @@
 				if (* dia > 31)
 				{
 					printf ("\n   Dia inválido. Digite o dia novamente.\n") ;
-					cont = 0;
+					cont = 0 ;
 				}
 			} while ( * dia > 31 ) ;
 
-			cont = 0;
+			cont = 0 ;
 
 			//MES
 			do {
@@ -784,7 +792,7 @@
 
 		} while ( * dia > maxDias [* mes - 1] ) ;
 
-		cont = 0;
+		cont = 0 ;
 		
 		//ANO
 		do 
@@ -812,46 +820,113 @@
 			D_ano[cont] = '\0' ;
 			* ano = atoi(D_ano) ;
 		
-			if ( * ano < 1850 )
+			if ( * ano < MEN_MIN_ANO )
 			{
 				printf ("\n   Ano inválido. Digite o ano novamente.") ;
 				cont = 0;
 			}
 
-		} while ( * ano < 1850 ) ;
+		} while ( * ano < MEN_MIN_ANO ) ;
 
-			printf("\n") ;
+		printf("\n") ;
 
 	}
-
+	
 /***********************************************************************
 *
-*  $FC Função: MEN_leSoLetra
+*  $FC Função: MEN_leUF
 *
 *  $ED Descrição da função
-*	  Efetua a leitura do teclado permitindo digitar letras (maiúscula ou minúscula) e espaço (Space).
-*     Limita a quantidade de caracteres em no máximo 80.
-*     A cadeia de caracteres não pode ficar vazia.     
+*	  Efetua a leitura do teclado permitindo digitar letras (maiúscula ou minúscula), 
+*          caso seja digitado letra minúscula, troca-se para maniúscula. 
+*     É obrigatório digitar as duas letras correspondentes a sigla de uma UF válida,
+*          caso informe uma UF inválida solicita novamente a sigla da UF.	
 *
 ***********************************************************************/
 /*Assertivas: 
 /			 
 ***********************************************************************/
+	
+	void MEN_leUF ( char * UF )
+	{
+		unsigned char a ;
+		int cont = 0, i;
+		char estados [][3]= {"AC","AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
+			"PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"};
 
-	void MEN_leSoLetra ( char * cad_carac )
+		do {
+			do
+			{
+				a = getch() ;
+
+				if (islower(a))
+					a = toupper(a);
+
+				if ( isupper(a) && cont < MEN_TAM_UF-1 )
+				{			
+					UF [cont] = (char) a ;
+					printf("%c", UF[cont]) ;
+					cont++ ;
+				} 
+				else
+					if (a==8 && cont) // 8 = BackSpace
+					{
+						printf("\b \b") ;
+						cont-- ;
+						UF[cont] = '\0' ;
+					} /* if */
+			} while ( cont < MEN_TAM_UF-1 || (a != 13 && cont == MEN_TAM_UF-1 ) ) ; // 13 = Enter
+
+		UF[cont] = '\0' ;
+
+		i = 0 ;
+
+		while ( i < MEN_QTD_EST && strcmp (UF, &estados [i][0]) )
+		{
+			i++ ;
+		}
+
+		if ( i == MEN_QTD_EST )
+		{
+			printf ("\nEsta sigla de estado não existe. Digite uma sigla correspondente a um estado brasileiro.\n\n") ;
+			cont = 0 ;
+		} /* if */
+
+		} while ( i == MEN_QTD_EST ) ;
+
+		printf("\n") ;
+
+	}
+
+/***********************************************************************
+*
+*  $FC Função: MEN_leComplemento
+*
+*  $ED Descrição da função
+*	  Efetua a leitura do teclado permitindo digitar letras (maiúscula ou minúscula), números (1,2,3,4,5,6,7,8,9,0),
+*          espaço (Space), ponto final (.), vírgula (,), ponto e vírgula (;), parênteses (()) e sinal de menos (-).
+*     Limita a quantidade de caracteres em no máximo 80.
+*     A cadeia de caracteres pode ficar vazia.     	
+*
+***********************************************************************/
+/*Assertivas: 
+/			 
+***********************************************************************/
+	
+	void MEN_leComplemento ( char * comp ) 
 	{
 		unsigned char a;
-		char cad[81] ; 
 		int cont = 0 ;
 
 		do
 		{
 			a = getch() ;
 			
-			if ( (isalpha(a) || a == ' ') && cont < 80 )
+			if ( (isalpha(a) || isdigit(a) || a == ' ' || a == ',' || a == '.' || a == ';' || a == '(' ||
+				a == ')' || a == '-') && cont < MEN_TAM_STRING-1 )
 			{			
-				cad [cont] = (char) a ;
-				printf("%c", cad[cont]) ;
+				comp [cont] = (char) a ;
+				printf("%c", comp[cont]) ;
 				cont++ ;
 			} 
 			else 
@@ -859,23 +934,113 @@
 				{
 					printf("\b \b") ;
 					cont-- ;
-					cad [cont] = '\0' ;
+					comp [cont] = '\0' ;
 				} /* if */
-		} while ( cont == 0 || (a != 13 && cont <= 80) ) ; // 13 = Enter
+		} while (a != 13 && cont <= MEN_TAM_STRING-1) ; // 13 = Enter
 
-		cad[cont] = '\0' ;
-		strcpy(cad_carac,cad) ;
-
-		printf("\n");
+		comp[cont] = '\0' ;
+		
+		printf("\n") ;
 
 	}
 	
 /***********************************************************************
 *
+*  $FC Função: MEN_leEmail
+*
+*  $ED Descrição da função
+*	  Efetua a leitura do teclado permitindo digitar letras minúscula, números (1,2,3,4,5,6,7,8,9,0),
+*          ponto final (.), vírgula (,), ponto e vírgula (;), parenteses (()) e sinal de menos (-).
+*     Limita a quantidade de caracteres em no máximo 80.
+*     A cadeia de caracteres não pode ficar vazia.     		
+*
+***********************************************************************/
+/*Assertivas: 
+/			 
+***********************************************************************/
+	
+	void MEN_leEmail ( char * email ) 
+	{
+		unsigned char a;
+		int cont = 0 ;
+
+		do
+		{
+			a = getch() ;
+			
+			if ( (islower(a) || isdigit(a) || a == '.' || a == '@' || a == '_' ||
+				a == '-') && cont < MEN_TAM_STRING-1 )
+			{			
+				email [cont] = (char) a ;
+				printf("%c", email[cont]) ;
+				cont++ ;
+			} 
+			else 
+				if (a==8 && cont) // 8 = BackSpace
+				{
+					printf("\b \b") ;
+					cont-- ;
+					email [cont] = '\0' ;
+				} /* if */
+		} while ( cont < 5 || (a != 13 && cont <= MEN_TAM_STRING-1) ) ; // 13 = Enter
+
+		email[cont] = '\0' ;
+		
+		printf("\n") ;
+
+	}
+
+/***********************************************************************
+*
+*  $FC Função: MEN_leMatricula
+*
+*  $ED Descrição da função
+*	  Efetua a leitura do teclado permitindo digitar apenas numeros (1,2,3,4,5,6,7,8,9,0).
+*     Só finaliza a leitura após digitar, obrigatoriamente, os 8 digitos correspondentes a matricula.	
+*
+***********************************************************************/
+/*Assertivas: 
+/			 
+***********************************************************************/
+
+	int MEN_leMatricula ( void )
+	{
+		unsigned char a ;
+		char mat[MEN_TAM_MAT] ; 
+		int cont = 0 ;
+
+		do
+		{
+			a = getch() ;
+
+			if ( isdigit(a) && cont < MEN_TAM_MAT-1 )
+			{			
+				mat [cont] = (char) a ;
+				printf("%c", mat[cont]) ;
+				cont++ ;
+			} 
+			else
+				if (a==8 && cont) // 8 = BackSpace
+				{
+					printf("\b \b") ;
+					cont-- ;
+					mat[cont] = '\0' ;
+				} /* if */
+		} while ( cont < MEN_TAM_MAT-1 || (a != 13 && cont == MEN_TAM_MAT-1) ); // 13 = Enter
+
+		mat[cont] = '\0' ;
+
+		return atoi(mat) ;
+
+	}
+
+/***********************************************************************
+*
 *  $FC Função: MEN_leNumero
 *
 *  $ED Descrição da função
-*		
+*	  Efetua a leitura do teclado permitindo digitar apenas numeros (1,2,3,4,5,6,7,8,9,0).
+*     Só finaliza a leitura após digitar, obrigatoriamente, um número de até 8 casas.	
 *
 ***********************************************************************/
 /*Assertivas: 
@@ -909,7 +1074,7 @@
 
 		num[cont] = '\0' ;
 
-		printf("\n");
+		printf("\n") ;
 
 		return atoi(num) ;
 
@@ -917,65 +1082,48 @@
 	
 /***********************************************************************
 *
-*  $FC Função: MEN_leUF
+*  $FC Função: MEN_leTelefone
 *
 *  $ED Descrição da função
-*		
+*	  Efetua a leitura do teclado permitindo digitar apenas numeros (1,2,3,4,5,6,7,8,9,0).
+*     Só finaliza a leitura após digitar, obrigatoriamente, o número de telefone com 8 ou 9 dígitos.		
 *
 ***********************************************************************/
 /*Assertivas: 
 /			 
 ***********************************************************************/
 	
-	void MEN_leUF ( char * UF )
+	int MEN_leTelefone ( void ) 
 	{
 		unsigned char a ;
-		int cont = 0, i, qtd_est = 27;
-		char estados [][3]= {"AC","AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
-			"PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"};
+		char num[MEN_TAM_TEL] ; 
+		int cont = 0 ;
 
-		do {
-			do
-			{
-				a = getch() ;
-
-				if (islower(a))
-					a = toupper(a);
-
-				if ( isupper(a) && cont < 2 )
-				{			
-					UF [cont] = (char) a ;
-					printf("%c", UF[cont]) ;
-					cont++ ;
-				} 
-				else
-					if (a==8 && cont) // 8 = BackSpace
-					{
-						printf("\b \b") ;
-						cont-- ;
-						UF[cont] = '\0' ;
-					} /* if */
-			} while ( cont < 2 || (a != 13 && cont == 2 ) ) ; // 13 = Enter
-
-		UF[cont] = '\0' ;
-
-		i = 0;
-
-		while ( i < qtd_est && strcmp (UF, &estados [i][0]) )
+		do
 		{
-			i++;
-		}
+			a = getch() ;
 
-		if ( i == qtd_est )
-		{
-			printf ("\nEsta sigla de estado não existe. Digite uma sigla correspondente a um estado brasileiro.\n\n");
-			cont = 0;
-		} /* if */
+			if ( isdigit(a) && cont < MEN_TAM_TEL-1 )
+			{			
+				num [cont] = (char) a ;
+				printf("%c", num[cont]) ;
+				cont++ ;
+			} 
+			else
+				if (a==8 && cont) // 8 = BackSpace
+				{
+					printf("\b \b") ;
+					cont-- ;
+					num[cont] = '\0' ;
+				} /* if */
+		} while ( cont < MEN_TAM_TEL-2 || ( a != 13 && cont <= MEN_TAM_TEL-1 ) ) ; // 13 = Enter
 
-		} while ( i == qtd_est ) ;
+		num[cont] = '\0' ;
 
 		printf("\n");
 
+		return atoi(num) ;
+	
 	}
 
 
