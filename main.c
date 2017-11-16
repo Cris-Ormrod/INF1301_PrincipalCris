@@ -222,10 +222,12 @@
 					break;
 				case 2:
 					//adiciona um aluno
+					system("cls");
 					MEN_adicionaAluno();
 					break;
 				case 3:
 					//altera os dados de um aluno
+					system("cls");
 					MEN_modificaAluno();
 					break;
 				case 4:
@@ -237,6 +239,7 @@
 					break;
 				case 5:
 					//remove todos os alunos
+					system("cls");
 					CDI_limpa();
 					break;
 				case 6:
@@ -247,10 +250,12 @@
 					break;
 				case 7:
 					//adiciona um professor
+					system("cls");
 					MEN_adicionaProfessor();
 					break;
 				case 8:
 					//altera os dados de um professor
+					system("cls");
 					MEN_modificaProfessor();
 					break;
 				case 9:
@@ -258,7 +263,8 @@
 					system("cls");
 					printf("\nDigite a matricula: \n");
 					scanf("%d", &mat);
-					if(CDO_buscaPorMatricula(mat)!=CDO_CondRetOk){
+					if(CDO_buscaPorMatricula(mat)!=CDO_CondRetOk)
+					{
 						printf("Professor nao encontrado, nao ha professor com esta matricula.");
 						break;
 					}

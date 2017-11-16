@@ -186,7 +186,7 @@
 		CDI_tpCondRet retBusca ;
 
 		system("cls") ;
-		printf ("*********** CADASTRO DE ALUNO ***********\n") ;
+		printf ("\n*********** CADASTRO DE ALUNO ***********\n") ;
 				
 		//adiciona aluno
 		printf("\nDigite o nome do aluno: \n") ;
@@ -239,6 +239,7 @@
 				printf("Erro de memoria ao cadastrar.");
 			else
 			{
+				system("cls");
 				printf("\nAluno cadastrado com sucesso!\n\n");
 				CDI_imprimeInfo ((unsigned int)mat);
 			}
@@ -270,87 +271,111 @@
 		CPF cpf;
 		Aluno* Alu;
 		int opcao;
+		CDI_tpCondRet ret;
 
-		printf("*********** EDITAR DADOS DE PROFESSOR ***********\n\n");
+		printf("\n*********** EDITAR DADOS DE ALUNO ***********\n\n");
 
 		printf("Digite a matricula do aluno para alterar seus dados: ");
-		scanf("%u",&matAnt);
+		matAnt = MEN_leNumero() ;
+
 		if (CDI_busca((unsigned int)matAnt,&Alu) != CDI_CondRetOK) 
 		{
-			printf("Aluno nao encontrado...\n");
-			printf("Pressione ENTER para voltar ao menu principal...\n");
+			printf("Nao existe aluno cadastrado com este numero de matricula %d, por favor tente novamente\n", matAnt);
+			printf("\nPressione qualquer tecla para voltar para o menu anterior.\n");
 			getch();
+			system("cls");
 			return;
 		}
 
-		printf("Escolha o dado a ser alterado: \n\n");
-		printf("Digite 1: Nome\n");
-		printf("Digite 2: Matricula\n");
-		printf("Digite 3: Telefone\n");
-		printf("Digite 4: Data de Nascimento\n");
-		printf("Digite 5: CPF\n");
-		printf("Digite 6: Endereco\n");
-		scanf("%d",&opcao);
-
-		system("cls");
-
-		switch(opcao)
+		do
 		{
-			case 1: 
-				printf("\nDigite o novo nome do aluno: \n");
-				scanf(" %s", nome);
-				CDI_altera(matAnt,nome,0,NULL,0,NULL,NULL);
-				break;
-			case 2:
-				printf("\nDigite a nova matricula do aluno (8 digitos): \n");
-				mat = MEN_leMatricula();
-				CDI_altera(matAnt, NULL, (unsigned int)mat, NULL, 0, NULL, NULL);
-				break;
-			case 3:
-				printf("\nDigite o novo telefone do aluno: \n");
-				scanf(" %u", &telefone);
-				CDI_altera(matAnt, NULL, 0, NULL,telefone, NULL, NULL);
-				break;
-			case 4:
-				printf("\nDigite a nova data de nascimento do aluno: \n");
-				MEN_leData (&nasc.dia, &nasc.mes, &nasc.ano);
-				CDI_altera(matAnt, NULL, 0, NULL,0,&nasc, NULL);
-				break;
-			case 5:
-				printf("\nDigite o novo CPF do aluno (11 digitos): \n");
-				MEN_leCPF(cpf_completo);
-				cpf.cod = atoi(cpf_completo+9);
-				cpf_completo[9] = '\0';
-				cpf.dig3 = atoi(cpf_completo+6);
-				cpf_completo[6] = '\0';
-				cpf.dig2 = atoi(cpf_completo+3);
-				cpf_completo[3] = '\0';
-				cpf.dig1 = atoi(cpf_completo);
-				CDI_altera(matAnt, NULL, 0, &cpf, 0, NULL, NULL);
-				break;
-			case 6:
-				printf("\nDigite a sigla do estado: \n");
-				scanf(" %s", end.estado);
-				printf("\nDigite a cidade: \n");
-				scanf(" %s", end.cidade);
-				printf("\nDigite o bairro: \n");
-				scanf(" %s", end.bairro);
-				printf("\nDigite a rua: \n");
-				scanf(" %s", end.rua);
-				printf("\nDigite o complemento:\n");
-				scanf(" %s", end.comp);
-				CDI_altera(matAnt, NULL,0,NULL,0, NULL, &end);
-				break;
-			default:
-				printf("Opcao invalida...");
-				break;
-		}
+			printf("\nEscolha o dado a ser alterado: \n\n");
+			printf("Digite 1: Nome\n");
+			printf("Digite 2: Matricula\n");
+			printf("Digite 3: Telefone\n");
+			printf("Digite 4: Data de nascimento\n");
+			printf("Digite 5: CPF\n");
+			printf("Digite 6: Endereco\n");
+			printf("\nDigite 0: Para voltar ao menu anterior\n");
+			
+			opcao = MEN_leNumero() ;
 
-		printf("\nDados alterados com sucesso!\n");
-		printf("Pressione ENTER para voltar ao menu principal...\n");
-		getch();
-		system("cls");
-		return;
+			system("cls");
+
+			switch(opcao)
+			{
+				case 1: 
+					printf("\nDigite o novo nome do aluno: \n");
+					MEN_leSoLetra (nome) ;
+					ret = CDI_altera(matAnt,nome,0,NULL,0,NULL,NULL);
+					break;
+				case 2:
+					printf("\nDigite a nova matricula do aluno (8 digitos): \n");
+					mat = MEN_leMatricula();
+					ret = CDI_altera(matAnt, NULL, (unsigned int)mat, NULL, 0, NULL, NULL);
+					break;
+				case 3:
+					printf("\nDigite o novo telefone do aluno: \n");
+					telefone = MEN_leTelefone() ;
+					ret = CDI_altera(matAnt, NULL, 0, NULL,telefone, NULL, NULL);
+					break;
+				case 4:
+					printf("\nDigite a nova data de nascimento do aluno: \n");
+					MEN_leData (&nasc.dia, &nasc.mes, &nasc.ano);
+					ret = CDI_altera(matAnt, NULL, 0, NULL,0,&nasc, NULL);
+					break;
+				case 5:
+					printf("\nDigite o novo CPF do aluno (11 digitos): \n");
+					MEN_leCPF(cpf_completo);
+					cpf.cod = atoi(cpf_completo+9);
+					cpf_completo[9] = '\0';
+					cpf.dig3 = atoi(cpf_completo+6);
+					cpf_completo[6] = '\0';
+					cpf.dig2 = atoi(cpf_completo+3);
+					cpf_completo[3] = '\0';
+					cpf.dig1 = atoi(cpf_completo);
+					ret = CDI_altera(matAnt, NULL, 0, &cpf, 0, NULL, NULL);
+					break;
+				case 6:
+					printf("\nInforme o novo endereco do aluno:");
+					printf("\nDigite o logradouro:\n") ;
+					MEN_leSoLetra (end.rua) ;
+					printf("\nDigite o numero:\n") ;
+					end.numero = MEN_leNumero() ;
+					printf("\nDigite o complemento:\n");
+					MEN_leComplemento (end.comp) ;
+					printf("\nDigite o bairro: \n");
+					MEN_leSoLetra (end.bairro) ;
+					printf("\nDigite a cidade: \n");
+					MEN_leSoLetra (end.cidade) ;
+					printf("\nDigite a sigla do estado: \n");
+					MEN_leUF (end.estado) ;
+					ret = CDI_altera(matAnt, NULL,0,NULL,0, NULL, &end);
+					break;
+				default:
+					if(opcao)
+					{
+						system("cls");
+						printf("\n\nOPCAO INVALIDA! Digite o numero de algumas das opcoes abaixo. \n\n");
+					}
+					break;
+			}
+
+			if ( ret == CDI_CondRetOK )
+			{
+				printf("\nDados alterados com sucesso!\n\n");
+
+				if (opcao == 2)
+					CDI_imprimeInfo ((unsigned int)mat);
+				else
+					CDI_imprimeInfo ((unsigned int)matAnt);
+				printf("\nPressione qualquer tecla para voltar para o menu anterior.\n");
+				getch();
+				system("cls");
+				return;
+			}
+		} while(opcao);
+
 	}
 
 /***********************************************************************
@@ -375,7 +400,7 @@
 		CDO_tpCondRet ret;
 
 		system("cls");
-		printf ("*********** CADASTRO DE PROFESSOR ***********\n\n");
+		printf ("\n*********** CADASTRO DE PROFESSOR ***********\n\n");
 
 		//Adiciona professor
 		printf("Digite o nome: \n") ;
@@ -450,7 +475,7 @@
 
 	void MEN_modificaProfessor()
 	{
-		char nomeFunc[][20] ={"sair",  "alterar o Nome", "alterar o RG","alterar o CPF","alterar a Matricula", "alterar o email", "alterar o Telefone", "alterar a Data", "alterar o Endereco"};
+		char nomeFunc[][30] ={"Para voltar ao menu anterior.",  "Nome", "RG","CPF","Matricula", "Email", "Telefone", "Data", "Endereco"};
 		int nAlteras = 9, i;
 		CDO_alteraInt funcInt[] = {NULL, NULL, CDO_alteraRg, NULL, CDO_alteraMatricula, NULL,CDO_alteraTelefone, NULL, NULL};
 		CDO_alteraString funcString[] = {NULL, CDO_alteraNome, NULL, CDO_alteraCpf, NULL, CDO_alteraEmail, NULL,NULL,NULL};
@@ -463,19 +488,33 @@
 
 		system("cls");
 		printf("\n*********** EDITAR DADOS DE PROFESSOR ***********\n");
-
-		printf("Digite a matrícula do professor que deseja modificar (8 digitos):\n");
+		printf("\nDigite a matricula do professor que deseja modificar (8 digitos):\n");
 		paramInt = MEN_leMatricula();
-		if(CDO_buscaPorMatricula(paramInt)!=CDO_CondRetOk){
-			printf("Não existe professor cadastrado com este numero de matricula %d, por favor tente novamente\n", paramInt);
+		
+		if(CDO_buscaPorMatricula(paramInt)!=CDO_CondRetOk)
+		{
+			printf("Nao existe professor cadastrado com este numero de matricula %d, por favor tente novamente\n", paramInt);
+			printf("\nPressione qualquer tecla para voltar para o menu anterior.\n");
+			getch();
+			system("cls");
 			return;
 		}
+
+		printf ("\n");
 		CDO_mostraAtual();
-		do{
-			for(i=0;i<nAlteras;i++)
+		
+		do
+		{
+			printf("\nEscolha o dado a ser alterado: \n\n");
+
+			for(i=1;i<nAlteras;i++)
 				printf("Digite %d: %s.\n", i, nomeFunc[i]);
-			scanf("%d", &opcao);
-			if(opcao>=nAlteras || opcao<1) return;
+
+			printf ("\nDigite 0: %s.\n", nomeFunc[0]);
+
+			opcao = MEN_leNumero() ;
+			if(opcao>=nAlteras || opcao<1)
+				return;
 			else if( opcao==nAlteras-2){//data
 				printf("\nDigite a data de nascimento: \n");
 				printf("Dia: \n");

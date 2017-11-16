@@ -109,7 +109,7 @@ CDI_tpCondRet CDI_imprime(void) {
 	}
 	first(Corpo->Aluno);
 	for (i = 0; i < size; i++) {
-		get_val_cursor(Corpo->Aluno, &a); // pego o aluno atual
+		get_val_cursor(Corpo->Aluno, (void**) &a); // pego o aluno atual
 		ALU_imprimeAluno(a);	// imprimo
 		next(Corpo->Aluno);	// vou para o próximo
 		printf("\n");	// Imprimo uma nova linha para dividir um aluno de outro
