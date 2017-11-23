@@ -1,3 +1,4 @@
+#pragma once
 /***************************************************************************
 *
 *  $MCD Módulo de definição: Módulo Disciplina
@@ -24,7 +25,15 @@
 *     Ao iniciar a execução do programa não existe DISiplinas.
 *     Uma disciplina deverá ter um critério de avaliação, que será um código que se *refere a uma forma de calcular a média final para poder determinar se um aluno *está aprovado ou não.
 ***************************************************************************/
+
 #include "turma.h"
+#define MAX_NOME 25
+#define MAX_CODIGO 8
+#define MAX_BIBLIOGRAFIA 300
+#define MAX_EMENTA 300
+#define MIN_CREDITOS 1
+#define MAX_CRITERIO 25
+
 typedef struct disciplina Disciplina;
 /***********************************************************************
 *
@@ -32,27 +41,26 @@ typedef struct disciplina Disciplina;
 *
 *
 ***********************************************************************/
-
-   typedef enum {
-     DIS_CondRetOK = 0 ,
-       /* Executou correto */
-
-     DIS_CondRetErroEstrutura = 1 ,
-      /* Estrutura da Disciplina está errada */
-     DIS_CondRetDisciplinaCriada = 2,
-     /* Estrutura da Disciplina está criada */
-     DIS_CondRetDisciplinaDeletada = 3,
-     /* Estrutura da Disciplina está deletada */
-     DIS_CondRetFaltouMemoria = 4 ,
-     /* Faltou memória ao alocar dados */
-     DIS_CondRetCreditoNegativo = 5,
-		 /* Creditos negativo fornecido */
-     DIS_CondRetOKEstrutura = 6,
-     /* Estrutura da Disciplina está correta */
-     DIS_CondRetParametroInvalido = 7
-	  /* Erro no parametro da disciplina */
-
-   }DIS_tpCondRet;
+typedef enum {
+	DIS_CondRetOK,
+	/* Executou correto */
+	DIS_CondRetErroEstrutura,
+	/* Estrutura da Disciplina está errada */
+	DIS_CondRetDisciplinaCriada,
+	/* Estrutura da Disciplina está criada */
+	DIS_CondRetDisciplinaDeletada,
+	/* Estrutura da Disciplina está deletada */
+	DIS_CondRetFaltouMemoria,
+	/* Faltou memória ao alocar dados */
+	DIS_CondRetCreditoNegativo,
+	/* Creditos negativo fornecido */
+	DIS_CondRetOKEstrutura,
+	/* Estrutura da Disciplina está correta */
+	DIS_CondRetParametroInvalido,
+	/* Erro no parametro da disciplina */
+	DIS_CondRetTurmaNaoExiste
+	/* Turma inexistente para essa disciplina*/
+}DIS_tpCondRet;
 /***********************************************************************
 *
 *  $FC Função: DIS obter creditos
@@ -170,7 +178,7 @@ DIS_tpCondRet DIS_exibe(Disciplina* d);
 *    Deleta disciplina recebida como parâmetro
 *
 ***********************************************************************/
-DIS_tpCondRet DIS_deleta_Disciplina (Disciplina **d);
+DIS_tpCondRet DIS_deleta_Disciplina(Disciplina **d);
 /***********************************************************************
 *
 *  $FC Função: DIS insere turma para a disciplina
@@ -179,7 +187,7 @@ DIS_tpCondRet DIS_deleta_Disciplina (Disciplina **d);
 *    Insere uma turma para a lista da disciplina
 *
 ***********************************************************************/
-DIS_tpCondRet DIS_insere_turma(Disciplina **d, Turma **t);
+DIS_tpCondRet DIS_insere_turma(Disciplina *d, Turma *t);
 /***********************************************************************
 *
 *  $FC Função: DIS limpa lista de turmas para a disciplina
@@ -197,7 +205,7 @@ DIS_tpCondRet DIS_limpa_turma(Disciplina **d);
 *    Exibe a lista de turmas da disciplina
 *
 ***********************************************************************/
-DIS_tpCondRet DIS_exibe_todas_turmas(Disciplina **d);
+DIS_tpCondRet DIS_exibe_todas_turmas(Disciplina *d);
 /***************************************************************************
 *
 *  $FC Função: DIS retornar media e situação do aluno
@@ -206,4 +214,6 @@ DIS_tpCondRet DIS_exibe_todas_turmas(Disciplina **d);
 *    retorna a media e a situação do aluno
 *
 *	*****/
-DIS_tpCondRet DIS_situacaoAluno(Disciplina* disc,float G1,float G2,float G3,float G4, float* media, int*situacao);
+DIS_tpCondRet DIS_situacaoAluno(Disciplina* disc, float G1, float G2, float G3, float G4, float* media, int*situacao);
+
+DIS_tpCondRet DIS_buscaTurma(Disciplina* d, char* codTurmaDesej, Turma** tur);
