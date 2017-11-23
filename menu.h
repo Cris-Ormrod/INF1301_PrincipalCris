@@ -43,7 +43,16 @@
 #define  MEN_TAM_MAT 9
 #define  MEN_TAM_TEL 10
 #define  MEN_QTD_EST 27
+#define  MEN_TAM_RG 10
 
+#define MEN_MAX_NOME 25
+#define MEN_MAX_CODIGO 8
+#define MEN_MAX_BIBLIOGRAFIA 300
+#define MEN_MAX_EMENTA 300
+#define MEN_MIN_CREDITOS 1
+#define MEN_MAX_CRITERIO 25
+#define MEN_COD_TUR 4
+#define MEN_DIA_SEMANA 28
 
 /***********************************************************************
 *
@@ -57,7 +66,7 @@
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
 	
-	int MEN_loginAdministrativo () ;
+	int MEN_loginAdministrativo ( void ) ;
 
 /***********************************************************************
 *
@@ -71,7 +80,7 @@
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
 
-	int MEN_loginProfessor () ;
+	int MEN_loginProfessor ( void ) ;
 	
 /***********************************************************************
 *
@@ -89,54 +98,120 @@
 
 /***********************************************************************
 *
-*  $FC Função: MEN_menuAluno
+*  $FC Função: MEN_adicionaAluno
 *
 *  $ED Descrição da função
-*		Mostra o menu Aluno.
+*		
 *Parâmentros: endereço da matricula que será recebida pelo usuario.
 ***********************************************************************/
 
-	void MEN_adicionaAluno () ;
+	void MEN_adicionaAluno ( void ) ;
 
 /***********************************************************************
 *
-*  $FC Função: MEN_menuAluno
+*  $FC Função: MEN_modificaAluno
 *
 *  $ED Descrição da função
-*		Mostra o menu Aluno.
+*		
 *
 ***********************************************************************/
 
-	void MEN_modificaAluno () ;
+	void MEN_modificaAluno ( void ) ;
 
 /***********************************************************************
 *
-*  $FC Função: MEN_menuProfessor
+*  $FC Função: MEN_adiocionaProfessor
 *
 *  $ED Descrição da função
-*		Mostra o menu Professor.
+*		
 *
 ***********************************************************************/
 /*Assertivas: Retorno da função: não há retorno.
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
 
-	void MEN_adicionaProfessor () ;
+	void MEN_adicionaProfessor ( void ) ;
 
 /***********************************************************************
 *
-*  $FC Função: MEN_menuProfessor
+*  $FC Função: MEN_modificaProfessor
 *
 *  $ED Descrição da função
-*		Mostra o menu Professor.
+*		
 *
 ***********************************************************************/
 /*Assertivas: Retorno da função: não há retorno.
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
 
-	void MEN_modificaProfessor () ;
+	void MEN_modificaProfessor ( void ) ;
 
+/***********************************************************************
+*
+*  $FC Função: MEN_removeProfessor
+*
+*  $ED Descrição da função
+*		
+*
+***********************************************************************/
+/*Assertivas: Retorno da função: não há retorno.
+/			 Parâmentros: Estruturas de ponteiros.
+***********************************************************************/
 
-	void MEN_menuGradeCurricular () ;
+	void MEN_removeProfessor ( void ) ;
 
+/***********************************************************************
+*
+*  $FC Função: MEN_removeProfessor
+*
+*  $ED Descrição da função
+*		
+*
+***********************************************************************/
+/*Assertivas: Retorno da função: não há retorno.
+/			 Parâmentros: Estruturas de ponteiros.
+***********************************************************************/
+
+	void MEN_removeTodosProfessores ( void ) ;
+
+/***********************************************************************
+*
+*  $FC Função: MEN_menuGradeCurricular
+*
+*  $ED Descrição da função
+*		
+*
+***********************************************************************/
+/*Assertivas: Retorno da função: não há retorno.
+/			 Parâmentros: Estruturas de ponteiros.
+***********************************************************************/
+
+	void MEN_menuGradeCurricular ( void ) ;
+
+/***********************************************************************
+*
+*  $FC Função: MEN_leNumero
+*
+*  $ED Descrição da função
+*		
+*
+***********************************************************************/
+/*Assertivas: Retorno da função: não há retorno.
+/			 Parâmentros: Estruturas de ponteiros.
+***********************************************************************/
+
+	int MEN_leNumero ( void ) ;
+
+/***********************************************************************
+*
+*  $FC Função: MEN_leMatricula 
+*
+*  $ED Descrição da função
+*		
+*
+***********************************************************************/
+/*Assertivas: Retorno da função: não há retorno.
+/			 Parâmentros: Estruturas de ponteiros.
+***********************************************************************/
+
+	int MEN_leMatricula ( void ) ;

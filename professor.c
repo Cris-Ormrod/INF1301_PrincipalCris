@@ -193,6 +193,7 @@ PRF_tpCondRet PRF_mostra(Prof* professor){
 	mostraData(professor->dataNascimento);
 	printf("Endereco:");
 	mostraEndereco(professor->endereco);
+	printf ("\n");
 	return PRF_CondRetOk;
 } /* Fim função: PRF Mostra professor */
 

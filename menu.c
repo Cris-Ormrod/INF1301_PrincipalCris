@@ -53,11 +53,12 @@
 	void MEN_leCPF ( char * cpf ) ;
 	void MEN_leData ( int * dia, int * mes, int * ano ) ;
 	void MEN_leUF ( char * UF ) ;
+	void MEN_leLogradouro ( char * logr ) ;
 	void MEN_leComplemento ( char * comp ) ;
 	void MEN_leEmail ( char * email ) ;
-	int MEN_leMatricula ( void ) ;
-	int MEN_leNumero ( void ) ;
 	int MEN_leTelefone ( void ) ;
+	int MEN_leRG ( void ) ;
+	void MEN_menuAnterior (void) ;
 
 /***********************************************************************
 *
@@ -185,69 +186,69 @@
 		CPF cpf ;
 		CDI_tpCondRet retBusca ;
 
-		system("cls") ;
-		printf ("\n*********** CADASTRO DE ALUNO ***********\n") ;
+		system( "cls" ) ;
+		printf( "\n*********** CADASTRO DE ALUNO ***********\n" ) ;
 				
 		//adiciona aluno
-		printf("\nDigite o nome do aluno: \n") ;
-		MEN_leSoLetra (nome) ;
+		printf( "\nDigite o nome do aluno: \n" ) ;
+		MEN_leSoLetra( nome ) ;
 
-		printf("\nDigite o numero da matricula (8 digitos): \n") ;
+		printf( "\nDigite o numero da matricula (8 digitos): \n" ) ;
 		mat = MEN_leMatricula() ;
 
-		printf("\nDigite o numero do CPF (11 digitos): \n") ;
-		MEN_leCPF(cpf_completo) ;
-		cpf.cod = atoi(cpf_completo+9) ;
+		printf( "\nDigite o numero do CPF (11 digitos): \n" ) ;
+		MEN_leCPF( cpf_completo ) ;
+		cpf.cod = atoi( cpf_completo+9 ) ;
 		cpf_completo[9] = '\0' ;
-		cpf.dig3 = atoi(cpf_completo+6) ;
+		cpf.dig3 = atoi( cpf_completo+6 ) ;
 		cpf_completo[6] = '\0' ;
-		cpf.dig2 = atoi(cpf_completo+3) ;
+		cpf.dig2 = atoi( cpf_completo+3 ) ;
 		cpf_completo[3] = '\0' ; 
-		cpf.dig1 = atoi(cpf_completo) ;
+		cpf.dig1 = atoi( cpf_completo ) ;
 
-		printf("\nDigite a data de nascimento:\n") ;
-		MEN_leData (&nasc.dia, &nasc.mes, &nasc.ano) ;
+		printf( "\nDigite a data de nascimento:\n" ) ;
+		MEN_leData( &nasc.dia, &nasc.mes, &nasc.ano ) ;
 
-		printf("\nDigite o numero do telefone (8 ou 9 digitos):\n") ;
+		printf( "\nDigite o numero do telefone (8 ou 9 digitos):\n" ) ;
 		telefone = MEN_leTelefone() ;
 
-		printf("\nInforme o endereco:");
-		printf("\nDigite o logradouro:\n") ;
-		MEN_leSoLetra (end.rua) ;
+		printf( "\nInforme o endereco:" );
+		printf( "\nDigite o logradouro:\n" ) ;
+		MEN_leLogradouro( end.rua ) ;
 
 		printf("\nDigite o numero:\n") ;
 		end.numero = MEN_leNumero() ;
 		
-		printf("\nDigite o complemento:\n");
-		MEN_leComplemento (end.comp) ;
+		printf( "\nDigite o complemento:\n" ) ;
+		MEN_leComplemento( end.comp ) ;
 
-		printf("\nDigite o bairro:\n") ;
-		MEN_leSoLetra (end.bairro) ;
+		printf( "\nDigite o bairro:\n" ) ;
+		MEN_leSoLetra( end.bairro ) ;
 
-		printf("\nDigite a cidade:\n") ;
-		MEN_leSoLetra (end.cidade) ;		
+		printf( "\nDigite a cidade:\n" ) ;
+		MEN_leSoLetra( end.cidade ) ;		
 
-		printf("\nDigite a sigla estado:\n") ;
-		MEN_leUF (end.estado) ;
+		printf( "\nDigite a sigla estado:\n") ;
+		MEN_leUF( end.estado ) ;
 
-		retBusca = CDI_insere(nome, (unsigned int)mat, &cpf, telefone, &nasc, &end);
+		retBusca = CDI_insere( nome, (unsigned int)mat, &cpf, (unsigned int)telefone, &nasc, &end ) ;
 
-		if(retBusca == CDI_CondRetAlunoJaCadastrado)
-			printf("Aluno ja cadastrado.");
-		else
-			if (retBusca == CDI_CondRetFaltouMemoria)
-				printf("Erro de memoria ao cadastrar.");
-			else
+		if ( retBusca == CDI_CondRetAlunoJaCadastrado )
+		{
+			printf( "Aluno ja cadastrado." ) ;
+		} else
+			if ( retBusca == CDI_CondRetFaltouMemoria )
 			{
-				system("cls");
-				printf("\nAluno cadastrado com sucesso!\n\n");
-				CDI_imprimeInfo ((unsigned int)mat);
-			}
+				printf( "Erro de memoria ao cadastrar." ) ;
+			} else
+			{
+				system( "cls" ) ;
+				printf( "\nAluno cadastrado com sucesso!\n\n" ) ;
+				CDI_imprimeInfo ( (unsigned int)mat ) ;
+			} /* if */
 		
-		printf("\n\n Pressione qualquer tecla para voltar para o Menu Administrativo.\n\n");
-		getch();
-		system("cls");
-		return;
+		MEN_menuAnterior() ;
+		return ;
 	}
 
 /***********************************************************************
@@ -264,117 +265,120 @@
 
 	void MEN_modificaAluno()
 	{
-		char nome[MEN_TAM_STRING], cpf_completo[MEN_TAM_CPF];
-		int mat, telefone, matAnt;
-		Data nasc; 
-		Endereco end;
-		CPF cpf;
-		Aluno* Alu;
-		int opcao;
-		CDI_tpCondRet ret;
+		char nome[MEN_TAM_STRING], cpf_completo[MEN_TAM_CPF] ;
+		int mat, telefone, matAnt ;
+		Data nasc ; 
+		Endereco end ;
+		CPF cpf ;
+		Aluno * Alu ;
+		int opcao ;
+		CDI_tpCondRet ret ;
 
-		printf("\n*********** EDITAR DADOS DE ALUNO ***********\n\n");
+		printf( "\n*********** EDITAR DADOS DE ALUNO ***********\n\n" ) ;
 
-		printf("Digite a matricula do aluno para alterar seus dados: ");
+		printf( "Digite a matricula do aluno para alterar seus dados: " ) ;
 		matAnt = MEN_leNumero() ;
 
-		if (CDI_busca((unsigned int)matAnt,&Alu) != CDI_CondRetOK) 
+		if ( CDI_busca( (unsigned int)matAnt, &Alu ) != CDI_CondRetOK ) 
 		{
-			printf("Nao existe aluno cadastrado com este numero de matricula %d, por favor tente novamente\n", matAnt);
-			printf("\nPressione qualquer tecla para voltar para o menu anterior.\n");
-			getch();
-			system("cls");
-			return;
+			printf( "Nao existe aluno cadastrado com este numero de matricula %d.\n", matAnt ) ;
+			MEN_menuAnterior() ;
 		}
 
 		do
 		{
-			printf("\nEscolha o dado a ser alterado: \n\n");
-			printf("Digite 1: Nome\n");
-			printf("Digite 2: Matricula\n");
-			printf("Digite 3: Telefone\n");
-			printf("Digite 4: Data de nascimento\n");
-			printf("Digite 5: CPF\n");
-			printf("Digite 6: Endereco\n");
-			printf("\nDigite 0: Para voltar ao menu anterior\n");
+			printf( "Dados do aluno que deseja modificar os dados:\n" ) ;
+			CDI_imprimeInfo( (unsigned int)matAnt ) ;
+			printf( "\n\nEscolha o dado a ser alterado: \n\n" ) ;
+			printf( "Digite 1: Nome\n" ) ;
+			printf( "Digite 2: Matricula\n" ) ;
+			printf( "Digite 3: Telefone\n" ) ;
+			printf( "Digite 4: Data de nascimento\n" ) ;
+			printf( "Digite 5: CPF\n" ) ;
+			printf( "Digite 6: Endereco\n" ) ;
+			printf( "\nDigite 0: Para voltar ao menu anterior\n" ) ;
 			
 			opcao = MEN_leNumero() ;
 
-			system("cls");
+			system("cls") ;
 
-			switch(opcao)
+			switch( opcao )
 			{
 				case 1: 
-					printf("\nDigite o novo nome do aluno: \n");
-					MEN_leSoLetra (nome) ;
-					ret = CDI_altera(matAnt,nome,0,NULL,0,NULL,NULL);
-					break;
+					printf( "\nDigite o novo nome do aluno: \n" ) ;
+					MEN_leSoLetra( nome ) ;
+					ret = CDI_altera( matAnt, nome, 0, NULL, 0, NULL, NULL ) ;
+					break ;
 				case 2:
-					printf("\nDigite a nova matricula do aluno (8 digitos): \n");
-					mat = MEN_leMatricula();
-					ret = CDI_altera(matAnt, NULL, (unsigned int)mat, NULL, 0, NULL, NULL);
-					break;
+					printf( "\nDigite a nova matricula do aluno (8 digitos): \n" ) ;
+					mat = MEN_leMatricula() ;
+					ret = CDI_altera( matAnt, NULL, (unsigned int)mat, NULL, 0, NULL, NULL ) ;
+					break ;
 				case 3:
-					printf("\nDigite o novo telefone do aluno: \n");
+					printf( "\nDigite o novo telefone do aluno: \n" ) ;
 					telefone = MEN_leTelefone() ;
-					ret = CDI_altera(matAnt, NULL, 0, NULL,telefone, NULL, NULL);
-					break;
+					ret = CDI_altera( matAnt, NULL, 0, NULL, (unsigned int)telefone, NULL, NULL ) ;
+					break ;
 				case 4:
-					printf("\nDigite a nova data de nascimento do aluno: \n");
-					MEN_leData (&nasc.dia, &nasc.mes, &nasc.ano);
-					ret = CDI_altera(matAnt, NULL, 0, NULL,0,&nasc, NULL);
-					break;
+					printf( "\nDigite a nova data de nascimento do aluno: \n" ) ;
+					MEN_leData ( &nasc.dia, &nasc.mes, &nasc.ano ) ;
+					ret = CDI_altera( matAnt, NULL, 0, NULL, 0, &nasc, NULL ) ;
+					break ;
 				case 5:
-					printf("\nDigite o novo CPF do aluno (11 digitos): \n");
-					MEN_leCPF(cpf_completo);
-					cpf.cod = atoi(cpf_completo+9);
-					cpf_completo[9] = '\0';
-					cpf.dig3 = atoi(cpf_completo+6);
-					cpf_completo[6] = '\0';
-					cpf.dig2 = atoi(cpf_completo+3);
-					cpf_completo[3] = '\0';
-					cpf.dig1 = atoi(cpf_completo);
-					ret = CDI_altera(matAnt, NULL, 0, &cpf, 0, NULL, NULL);
-					break;
+					printf( "\nDigite o novo CPF do aluno (11 digitos): \n" ) ;
+					MEN_leCPF( cpf_completo ) ;
+					cpf.cod = atoi( cpf_completo+9 ) ;
+					cpf_completo[9] = '\0' ;
+					cpf.dig3 = atoi( cpf_completo+6 ) ;
+					cpf_completo[6] = '\0' ;
+					cpf.dig2 = atoi( cpf_completo+3 ) ;
+					cpf_completo[3] = '\0' ;
+					cpf.dig1 = atoi( cpf_completo ) ;
+					ret = CDI_altera( matAnt, NULL, 0, &cpf, 0, NULL, NULL ) ;
+					break ;
 				case 6:
-					printf("\nInforme o novo endereco do aluno:");
-					printf("\nDigite o logradouro:\n") ;
-					MEN_leSoLetra (end.rua) ;
-					printf("\nDigite o numero:\n") ;
+					printf( "\nInforme o novo endereco do aluno:" ) ;
+					printf( "\nDigite o logradouro:\n" ) ;
+					MEN_leLogradouro( end.rua ) ;
+					printf( "\nDigite o numero:\n" ) ;
 					end.numero = MEN_leNumero() ;
-					printf("\nDigite o complemento:\n");
-					MEN_leComplemento (end.comp) ;
-					printf("\nDigite o bairro: \n");
-					MEN_leSoLetra (end.bairro) ;
-					printf("\nDigite a cidade: \n");
-					MEN_leSoLetra (end.cidade) ;
-					printf("\nDigite a sigla do estado: \n");
-					MEN_leUF (end.estado) ;
-					ret = CDI_altera(matAnt, NULL,0,NULL,0, NULL, &end);
-					break;
+					printf( "\nDigite o complemento:\n" ) ;
+					MEN_leComplemento( end.comp ) ;
+					printf( "\nDigite o bairro: \n" ) ;
+					MEN_leSoLetra( end.bairro ) ;
+					printf( "\nDigite a cidade: \n" ) ;
+					MEN_leSoLetra( end.cidade ) ;
+					printf( "\nDigite a sigla do estado: \n" ) ;
+					MEN_leUF( end.estado ) ;
+					ret = CDI_altera( matAnt, NULL, 0, NULL, 0 , NULL, &end ) ;
+					break ;
 				default:
-					if(opcao)
+					if ( opcao )
 					{
-						system("cls");
-						printf("\n\nOPCAO INVALIDA! Digite o numero de algumas das opcoes abaixo. \n\n");
-					}
+						system( "cls" ) ;
+						printf( "\n\nOPCAO INVALIDA! Digite o numero de algumas das opcoes abaixo. \n\n" ) ;
+					} /* if */
 					break;
 			}
 
 			if ( ret == CDI_CondRetOK )
 			{
-				printf("\nDados alterados com sucesso!\n\n");
+				printf( "\nDados alterados com sucesso!\n\n" ) ;
 
-				if (opcao == 2)
-					CDI_imprimeInfo ((unsigned int)mat);
+				if ( opcao == 2 )
+				{
+					CDI_imprimeInfo( (unsigned int)mat ) ;
+				}
 				else
-					CDI_imprimeInfo ((unsigned int)matAnt);
-				printf("\nPressione qualquer tecla para voltar para o menu anterior.\n");
-				getch();
-				system("cls");
-				return;
-			}
-		} while(opcao);
+				{
+					CDI_imprimeInfo( (unsigned int)matAnt ) ;
+				} /* if */
+
+				MEN_menuAnterior() ;
+				return ;
+			} /* if */
+
+		} while ( opcao ) ;
 
 	}
 
@@ -390,75 +394,82 @@
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
 
-	void MEN_adicionaProfessor()
+	void MEN_adicionaProfessor ( void )
 	{
-		int rg, matricula, telefone;
-		int dia, mes, ano;
-		char nome[MEN_TAM_STRING], cpf[MEN_TAM_CPF], email[MEN_TAM_STRING];
-		char pais[MEN_TAM_STRING], uf[MEN_TAM_UF], cidade[MEN_TAM_STRING], bairro[MEN_TAM_STRING], rua[MEN_TAM_STRING], complemento[MEN_TAM_STRING];
-		int numero;
-		CDO_tpCondRet ret;
+		int rg, matricula, telefone ;
+		int dia, mes, ano ;
+		char nome[MEN_TAM_STRING], cpf[MEN_TAM_CPF], email[MEN_TAM_STRING] ;
+		char pais[MEN_TAM_STRING], uf[MEN_TAM_UF], cidade[MEN_TAM_STRING], bairro[MEN_TAM_STRING], rua[MEN_TAM_STRING], complemento[MEN_TAM_STRING] ;
+		int numero ;
+		CDO_tpCondRet ret ;
 
-		system("cls");
-		printf ("\n*********** CADASTRO DE PROFESSOR ***********\n\n");
+		system( "cls" ) ;
+		printf( "\n*********** CADASTRO DE PROFESSOR(A) ***********\n\n" ) ;
 
 		//Adiciona professor
-		printf("Digite o nome: \n") ;
-		MEN_leSoLetra (nome) ;
+		printf( "Digite o nome: \n" ) ;
+		MEN_leSoLetra( nome ) ;
 
-		printf("\nDigite o numero do RG: \n") ;
-		rg = MEN_leNumero() ;
+		printf( "\nDigite o numero do RG (9 digitos): \n") ;
+		rg = MEN_leRG() ;
 
-		printf("\nDigite o numero do CPF (11 digitos): \n") ;
-		MEN_leCPF(cpf) ;
+		printf( "\nDigite o numero do CPF (11 digitos): \n" ) ;
+		MEN_leCPF( cpf ) ;
 
-		printf("\nDigite o numero da matricula (8 digitos): \n") ;
+		printf( "\nDigite o numero da matricula (8 digitos): \n" ) ;
 		matricula = MEN_leMatricula() ;
 
-		printf("\nDigite a data de nascimento: \n") ;
-		MEN_leData (&dia, &mes, &ano) ;
+		printf( "\nDigite a data de nascimento: \n" ) ;
+		MEN_leData( &dia, &mes, &ano ) ;
 
 		printf("\nDigite o numero do telefone (8 ou 9 digitos): \n") ;
 		telefone = MEN_leTelefone() ;
 
-		printf("\nDigite o email: \n") ;
-		MEN_leEmail (email) ;
+		printf( "\nDigite o email: \n" ) ;
+		MEN_leEmail( email ) ;
 
-		printf("\nInforme o endereco:");
-		printf("\nDigite o logradouro:\n") ;
-		MEN_leSoLetra (rua) ;
+		printf( "\nInforme o endereco:" ) ;
+		printf( "\nDigite o logradouro:\n" ) ;
+		MEN_leLogradouro( rua ) ;
 
-		printf("\nDigite o numero:\n") ;
+		printf( "\nDigite o numero:\n" ) ;
 		numero = MEN_leNumero() ;
 
-		printf("\nDigite o complemento:\n") ;
-		MEN_leComplemento (complemento) ;
+		printf( "\nDigite o complemento:\n" ) ;
+		MEN_leComplemento( complemento ) ;
 
-		printf("\nDigite o bairro:\n") ;
-		MEN_leSoLetra (bairro) ;
+		printf( "\nDigite o bairro:\n" ) ;
+		MEN_leSoLetra( bairro ) ;
 
-		printf("\nDigite a cidade:\n") ;
-		MEN_leSoLetra (cidade) ;
+		printf( "\nDigite a cidade:\n" ) ;
+		MEN_leSoLetra( cidade ) ;
 
-		printf("\nDigite a sigla do estado:\n") ;
-		MEN_leUF (uf) ;
+		printf( "\nDigite a sigla do estado:\n" ) ;
+		MEN_leUF( uf ) ;
 
-		printf("\nDigite o pais: \n") ;
-		MEN_leSoLetra (pais) ;
+		printf( "\nDigite o pais: \n" ) ;
+		MEN_leSoLetra( pais ) ;
 
-		ret = CDO_cadastra(nome, rg, cpf, matricula, email, telefone, dia, mes, ano, pais, uf, cidade, bairro, rua, numero, complemento);
-		if(ret == CDO_CondRetOk)
-			printf("\nProfessor cadastrado com sucesso!\n\n");
-		else if(ret == CDO_CondRetFormatoInvalido)
-			printf("\nERRO. Formato de dados invalido.\n");
-		else if(ret == CDO_CondRetIdJaCriado)
-			printf("\nERRO. Ja existe um professor com este valor de identificacao.\n");
-		CDO_mostraAtual();
+		ret = CDO_cadastra( nome, rg, cpf, matricula, email, telefone, dia, mes, ano, pais, uf, cidade, bairro, rua, numero, complemento ) ;
+		
+		if ( ret == CDO_CondRetOk )
+		{
+			system( "cls" ) ;
+			printf( "\nProfessor cadastrado com sucesso!\n\n" ) ;
+			CDO_buscaPorMatricula( matricula ) ;
+			CDO_mostraAtual() ;
+		} else
+			if ( ret == CDO_CondRetFormatoInvalido )
+			{
+				printf( "\nERRO. Formato de dados invalido.\n" ) ;
+			} else
+				if ( ret == CDO_CondRetIdJaCriado )
+				{
+					printf( "\nERRO. Ja existe um professor com este valor de identificacao.\n" ) ;
+				} /* if */
 
-		printf("\n\n Pressione qualquer tecla para voltar para o Menu Administrativo.\n\n");
-		getch();
-		system("cls");
-		return;
+		MEN_menuAnterior() ;
+		return ;
 	}
 
 /***********************************************************************
@@ -475,91 +486,366 @@
 
 	void MEN_modificaProfessor()
 	{
-		char nomeFunc[][30] ={"Para voltar ao menu anterior.",  "Nome", "RG","CPF","Matricula", "Email", "Telefone", "Data", "Endereco"};
-		int nAlteras = 9, i;
-		CDO_alteraInt funcInt[] = {NULL, NULL, CDO_alteraRg, NULL, CDO_alteraMatricula, NULL,CDO_alteraTelefone, NULL, NULL};
-		CDO_alteraString funcString[] = {NULL, CDO_alteraNome, NULL, CDO_alteraCpf, NULL, CDO_alteraEmail, NULL,NULL,NULL};
-		int paramInt, dia, mes, ano;
-		char paramString[MEN_TAM_STRING];
-		char pais[MEN_TAM_STRING], uf[MEN_TAM_STRING], cidade[MEN_TAM_STRING], bairro[MEN_TAM_STRING], rua[MEN_TAM_STRING], complemento[MEN_TAM_STRING];
-		int numero;
-		CDO_tpCondRet ret;
-		int opcao;
+		char nomeFunc[][30] = { "Para voltar ao menu anterior.", "Nome", "RG", "CPF", "Matricula", "Email", "Telefone", "Data", "Endereco" } ;
+		int nAlteras = 9, i ;
+		CDO_alteraInt funcInt[] = { NULL, NULL, CDO_alteraRg, NULL, CDO_alteraMatricula, NULL,CDO_alteraTelefone, NULL, NULL } ;
+		CDO_alteraString funcString[] = {NULL, CDO_alteraNome, NULL, CDO_alteraCpf, NULL, CDO_alteraEmail, NULL, NULL, NULL } ; 
+		int paramInt, dia, mes, ano ; 
+		char paramString[MEN_TAM_STRING] ;
+		char pais[MEN_TAM_STRING], uf[MEN_TAM_STRING], cidade[MEN_TAM_STRING], bairro[MEN_TAM_STRING], rua[MEN_TAM_STRING], complemento[MEN_TAM_STRING] ;
+		int numero ;
+		CDO_tpCondRet ret ;
+		int opcao ;
 
-		system("cls");
-		printf("\n*********** EDITAR DADOS DE PROFESSOR ***********\n");
-		printf("\nDigite a matricula do professor que deseja modificar (8 digitos):\n");
-		paramInt = MEN_leMatricula();
+		system( "cls" ) ;
+		printf( "\n*********** EDITAR DADOS DE PROFESSOR(A) ***********\n" ) ;
+		printf( "\nDigite a matricula do professor que deseja modificar (8 digitos):\n" ) ;
+		paramInt = MEN_leMatricula() ;
 		
-		if(CDO_buscaPorMatricula(paramInt)!=CDO_CondRetOk)
+		if ( CDO_buscaPorMatricula(paramInt) != CDO_CondRetOk )
 		{
-			printf("Nao existe professor cadastrado com este numero de matricula %d, por favor tente novamente\n", paramInt);
-			printf("\nPressione qualquer tecla para voltar para o menu anterior.\n");
-			getch();
-			system("cls");
-			return;
-		}
-
-		printf ("\n");
-		CDO_mostraAtual();
+			printf( "Nao existe professor cadastrado com este numero de matricula %d, por favor tente novamente\n", paramInt ) ;
+			MEN_menuAnterior() ;
+			return ;
+		} /* if */
 		
 		do
 		{
-			printf("\nEscolha o dado a ser alterado: \n\n");
+			printf( "Dados do professor que deseja modificar os dados:\n" ) ;
+			CDO_mostraAtual() ;
+			printf( "\n\nEscolha o dado a ser alterado: \n\n" ) ;
 
-			for(i=1;i<nAlteras;i++)
-				printf("Digite %d: %s.\n", i, nomeFunc[i]);
+			for ( i = 1; i < nAlteras; i++ )
+			{
+				printf( "Digite %d: %s.\n", i, nomeFunc[i] ) ;
+			} /* for */
 
-			printf ("\nDigite 0: %s.\n", nomeFunc[0]);
-
+			printf( "\nDigite 0: %s.\n", nomeFunc[0] ) ;
 			opcao = MEN_leNumero() ;
-			if(opcao>=nAlteras || opcao<1)
-				return;
-			else if( opcao==nAlteras-2){//data
-				printf("\nDigite a data de nascimento: \n");
-				printf("Dia: \n");
-				scanf("%d", &dia);
-				printf("Mes: \n");
-				scanf("%d", &mes);
-				printf("Ano: \n");
-				scanf("%d", &ano);
-				ret = CDO_alteraDataNascimento(dia, mes, ano);
-			} else if( opcao==nAlteras-1){//endereco
-				printf("\nDigite o novo pais:\n");
-				scanf(" %s", pais);
-				printf("\nDigite o novo estado:\n");
-				scanf(" %2s", uf);
-				printf("\nDigite a nova cidade:\n");
-				scanf(" %s", cidade);
-				printf("\nDigite o novo bairro:\n");
-				scanf(" %s", bairro);
-				printf("\nDigite a nova rua:\n");
-				scanf(" %s", rua);
-				printf("\nDigite o novo numero:\n");
-				numero = MEN_leNumero();
-				printf("\nDigite o novo complemento:\n");
-				scanf(" %s", complemento);
-				ret = CDO_alteraEndereco(pais, uf, cidade, bairro, rua, numero, complemento);
-			}
-			else{
-				printf("Digite o novo valor para %s.\n", nomeFunc[opcao]);
-				if(funcInt[opcao]!= NULL){
-					scanf("%d", &paramInt);
-					ret = funcInt[opcao](paramInt);
-				} else if (funcString[opcao]!= NULL){
-					scanf(" %s", paramString);
-					ret = funcString[opcao](paramString);
-				} else break;
-			}
-			if(ret == CDO_CondRetOk)
-				printf("Alteracao realizada com sucesso!\n");
-			else if(ret == CDO_CondRetFormatoInvalido)
-				printf("ERRO. Formato de dados invalido.\n");
-			else if(ret == CDO_CondRetIdJaCriado)
-				printf("ERRO. Ja existe um professor com este valor de identificacao.\n");
-			CDO_mostraAtual();
-		}while(opcao);
+			
+			switch( opcao )
+			{
+				case 1:
+					//Nome
+					printf( "\nDigite o novo valor para %s.\n", nomeFunc[opcao] ) ;
+					MEN_leSoLetra( paramString ) ;
+					ret = funcString[opcao](paramString) ;
+					break ;
+				case 2: 
+					//RG
+					printf( "\nDigite o novo valor para %s.\n", nomeFunc[opcao] ) ;
+					paramInt = MEN_leRG() ;
+					ret = funcInt[opcao](paramInt) ;
+					break ;
+				case 3:
+					//CPF
+					printf( "\nDigite o novo valor para %s.\n", nomeFunc[opcao] ) ;
+					MEN_leCPF( paramString ) ;
+					ret = funcString[opcao](paramString) ;
+					break ;
+				case 4: 
+					//Matricula
+					printf( "\nDigite o novo valor para %s.\n", nomeFunc[opcao] ) ;
+					paramInt = MEN_leMatricula() ;
+					ret = funcInt[opcao](paramInt) ;
+					break ;
+				case 5: 
+					//Email
+					printf( "\nDigite o novo valor para %s.\n", nomeFunc[opcao] ) ;
+					MEN_leEmail ( paramString ) ;
+					ret = funcString[opcao](paramString) ;
+					break ;
+				case 6: 
+					//Telefone
+					printf( "\nDigite o novo valor para %s.\n", nomeFunc[opcao] ) ;
+					paramInt = MEN_leTelefone() ;
+					ret = funcInt[opcao](paramInt) ;
+					break ;
+				case 7:
+					//Data
+					printf( "\nDigite a nova data de nascimento: \n" ) ;
+					MEN_leData (&dia, &mes, &ano) ;
+					ret = CDO_alteraDataNascimento( dia, mes, ano ) ;
+					break ;
+				case 8:
+					//Nascimento
+					printf( "\nInforme o novo endereco:" ) ;
+					printf("\nDigite o logradouro:\n") ;
+					MEN_leLogradouro( rua ) ;
+					printf( "\nDigite o novo numero:\n" ) ;
+					numero = MEN_leNumero() ;
+					printf( "\nDigite o novo complemento:\n" ) ;
+					scanf( " %s", complemento ) ;
+					printf( "\nDigite o novo bairro:\n" ) ;
+					MEN_leSoLetra( bairro ) ;
+					printf( "\nDigite a nova cidade:\n" ) ;
+					MEN_leSoLetra( cidade ) ;
+					printf( "\nDigite o novo estado:\n" ) ;
+					MEN_leUF( uf ) ;
+					printf( "\nDigite o novo pais:\n" ) ;
+					MEN_leSoLetra( pais ) ;
+					ret = CDO_alteraEndereco( pais, uf, cidade, bairro, rua, numero, complemento ) ;
+					break ;
+				default:
+					if ( opcao )
+					{
+						system( "cls" ) ;
+						printf( "\n\nOPCAO INVALIDA! Digite o numero de algumas das opcoes abaixo. \n\n" ) ;
+					} /* if */
+					break ;
+			} /* switch */
+					
+			if ( ret == CDO_CondRetOk )
+			{
+				system( "cls" ) ;
+				printf( "Alteracao realizada com sucesso!\n\n" ) ;
+				CDO_mostraAtual() ;
+			} else
+				if ( ret == CDO_CondRetFormatoInvalido )
+				{
+					printf( "ERRO. Formato de dados invalido.\n" ) ;
+				} else
+					if( ret == CDO_CondRetIdJaCriado )
+					{
+						printf( "ERRO. Ja existe um professor com este valor de identificacao.\n" ) ;
+					} /* if */
+
+		} while ( opcao ) ;
 	}
+
+/***********************************************************************
+*
+*  $FC Função: MEN_removeProfessor
+*
+*  $ED Descrição da função
+*		Mostra o menu inicial.
+*
+***********************************************************************/
+/*Assertivas: Retorno da função: Retona 1, se os dados são validos.
+/			 Parâmentros: Estruturas de ponteiros.
+***********************************************************************/
+
+	void MEN_removeProfessor ( void )
+	{
+		int mat, opcao ;
+		CDO_tpCondRet ret ;
+
+		printf( "\n*********** REMOVE PROFESSOR(A) ***********\n" ) ;
+		
+		printf( "\nDigite a matricula do professor que deseja remover permanentemente da relacao de professores: \n" ) ;
+		mat = MEN_leMatricula() ;
+	
+		if ( CDO_buscaPorMatricula(mat) != CDO_CondRetOk )
+		{
+			printf( "Nao existe professor cadastrado com este numero de matricula %d.\n", mat ) ;
+			MEN_menuAnterior() ;
+		} else
+		{
+			do
+			{
+				printf ("\nPROFESSOR(A):\n") ;
+				CDO_mostraAtual() ;
+				printf ("TEM CERTEZA QUE DESEJA REMOVER PERMANENTEMENTE TODOS OS DADOS DESTE PROFESSOR?\n\n") ;
+				printf ("Digite 1: Para SIM.\n") ;
+				printf ("Digite 0: Para NAO.\n\n") ;
+
+				opcao = MEN_leNumero() ;
+
+				switch( opcao )
+				{
+					case 1:
+						ret = CDO_retira() ;
+						if ( ret == CDO_CondRetOk )
+						{
+							printf ("\nDados do professor removido com sucesso!\n");
+							MEN_menuAnterior() ;
+							return ;
+						} /* if */
+						break ;
+					default:
+						if ( opcao )
+						{
+							system( "cls" ) ;
+							printf( "\n\nOPCAO INVALIDA! Digite o numero de algumas das opcoes abaixo. \n\n" ) ;
+						} /* if */
+						break ;
+				} /* switch */
+
+			} while ( opcao ) ;
+
+			MEN_menuAnterior() ;
+			return ;
+
+		}/* if */
+	
+	} 
+
+/***********************************************************************
+*
+*  $FC Função: MEN_removeProfessor
+*
+*  $ED Descrição da função
+*		Mostra o menu inicial.
+*
+***********************************************************************/
+/*Assertivas: Retorno da função: Retona 1, se os dados são validos.
+/			 Parâmentros: Estruturas de ponteiros.
+***********************************************************************/
+
+	void MEN_removeTodosProfessores ( void )
+	{
+		int opcao ;
+
+		do
+			{
+				printf ("TEM CERTEZA QUE DESEJA REMOVER PERMANENTEMENTE TODOS OS DADOS DE TODOS OS PROFESSORES CADASTRADOS?\n\n") ;
+				printf ("Digite 1: Para SIM.\n") ;
+				printf ("Digite 0: Para NAO.\n\n") ;
+
+				opcao = MEN_leNumero() ;
+
+				switch( opcao )
+				{
+					case 1:
+						CDO_limpa() ;
+						printf ("\nTodos os dados de todos os professores foram remivos com sucesso!\n");
+						MEN_menuAnterior() ;
+						return ;
+						//break ;
+					default:
+						if ( opcao )
+						{
+							system( "cls" ) ;
+							printf( "\nOPCAO INVALIDA! Digite o numero de algumas das opcoes abaixo. \n\n" ) ;
+						} /* if */
+						break ;
+				} /* switch */
+
+			} while ( opcao ) ;
+
+		printf ("\nNenhum o dado de nenhmu professor foi remivo.\n");
+		MEN_menuAnterior() ;
+		return ;
+	}
+
+/***********************************************************************
+*
+*  $FC Função: MEN_menuGradeCurricular
+*
+*  $ED Descrição da função
+*		Mostra o menu Grade Curricular.
+*
+***********************************************************************/
+/*Assertivas: 
+***********************************************************************/
+
+	void MEN_menuGradeCurricular()
+	{
+		char nomeFunc[][40] = { "Sair", "Adicionar disciplina" , "Mostrar a disciplina atual", "Buscar outra disciplina",
+			"Mostrar todas as disciplinas", "Inserir um Pre-Requisito", "Remover todos os Pre-Requisitos",
+			"Limpar a grade Curricular", "Inserir uma turma", "Exibe as turmas de uma disciplina" };
+		int nItens = 9, i;
+		int creditos;
+		char nome[MEN_MAX_NOME], codigo[MEN_MAX_CODIGO], bibliografia[MEN_MAX_BIBLIOGRAFIA], ementa[MEN_MAX_EMENTA],
+			codTur[MEN_COD_TUR], diaSem[MEN_DIA_SEMANA];
+
+		int horIni, horTer, qtdVag;
+		int criterio;
+		GRC_tpCondRet ret;
+		int opcao;
+
+	
+		do {
+			printf("\nMenu Grade Curricular\n");
+			for (i = 0;i <= nItens;i++)
+				printf("Digite %d: %s.\n", i, nomeFunc[i]);
+			scanf("%d", &opcao);
+
+			switch (opcao) {
+			case 1:
+				system("cls");
+				ret = GRC_cadastraCMD();
+				break;
+			case 2:
+				GRC_mostraAtual();
+				break;
+			case 3:
+				system("cls");
+				printf("Digite o código da disciplina que deseja buscar:\n");
+				scanf(" %s", codigo);
+				ret = GRC_buscaPorCodigo(codigo);
+				GRC_mostraAtual();
+				break;
+			case 4:
+				system("cls");
+				GRC_mostraTodas();
+				printf("\n\n");
+				break;
+			case 5:
+				system("cls");
+				printf("Digite o código da disciplina que deseja configurar como pre-requisito:\n");
+				scanf(" %s", codigo);
+				ret = GRC_inserePreRequisito(codigo);
+				break;
+			case 6:
+				GRC_removePreRequisitos();
+				break;
+			case 7:
+				printf("\nDeseja mesmo apagar todo o corpo discente?\n1-Sim\n2-Nao\n");
+				scanf("%d", &opcao);
+				if (opcao == 1) {
+					system("cls");
+					CDI_limpa();
+					printf("O corpo discente foi completamente apagado.\n");
+				}
+				GRC_limpa();
+				MEN_menuAnterior();
+				break;
+			case 8:
+				printf("Digite o codigo da disciplina em que deseja inserir uma turma:\n");
+				scanf("%s", codigo);
+				printf("Digite o codigo da turma:\n");
+				scanf("%s", codTur);
+				printf("Digite o dia da semana da aula:\n");
+				scanf("%s", diaSem);
+				do {
+					printf("Digite a hora de inicio da aula(7 >= HorIni <= 21):\n");
+					scanf("%d", &horIni);
+				} while (horIni > 21 || horIni <7);
+				do {
+					printf("Digita a hora do termino da aula (9 >= HorTer <= 23):\n");
+					scanf("%d", &horTer);
+				} while (horTer >23 || horTer < 9);
+				printf("Digite a quantidade de vagas:\n");
+				scanf("%d", &qtdVag);
+				ret = GRC_insereTurma(codTur, horIni, horTer, diaSem, qtdVag, codigo);
+				break;
+			case 9:
+				printf("Digite o codigo da disciplina que deseja checar as turmas:\n");
+				scanf("%s", codigo);
+				ret = GRC_exibeTurmas(codigo);
+				break;
+			default:
+				if (opcao)
+					printf("Opcao inválida!\n");
+				break;
+			}
+			if (ret == GRC_CondRetOk)
+				printf("Operacao realizada com sucesso!\n");
+			else if (ret == GRC_CondRetNaoHaMemoria)
+				printf("ERRO. Nao ha memoria suficiente.\n");
+			else if (ret == GRC_CondRetGradeCurricularVazia)
+				printf("Ainda nao existe nenhuma disciplina cadastrada.\n");
+			else if (ret == GRC_CondRetDisciplinaNaoEncontrada)
+				printf("A disciplina solicitada nao foi encontrada.\n");
+			else if (ret == GRC_CondRetIdJaCriado)
+				printf("ERRO.Ja existe uma Disciplina com este codigo.\n");
+			else if (ret == GRC_CondRetFormatoInvalido)
+				printf("ERRO. Formato de dados invalido.\n");
+			MEN_menuAnterior();
+		} while (opcao);
+	}
+
 
 
 /***********************************************************************
@@ -859,6 +1145,51 @@
 
 /***********************************************************************
 *
+*  $FC Função: MEN_leLogradouro
+*
+*  $ED Descrição da função
+*	  Efetua a leitura do teclado permitindo digitar letras (maiúscula ou minúscula), números (1,2,3,4,5,6,7,8,9,0),
+*          espaço (Space), ponto final (.) e sinal de menos (-).
+*     Limita a quantidade de caracteres em no máximo 80.
+*     A cadeia de caracteres não pode ficar vazia.     	
+*
+***********************************************************************/
+/*Assertivas: 
+/			 
+***********************************************************************/
+
+	void MEN_leLogradouro ( char * logr ) 
+	{
+		unsigned char a;
+		int cont = 0 ;
+
+		do
+		{
+			a = getch() ;
+			
+			if ( (isdigit(a) || isalpha(a) || a == ' ' ||  a == '.' || a == '-') && cont < MEN_TAM_STRING-1 )
+			{			
+				logr [cont] = (char) a ;
+				printf("%c", logr[cont]) ;
+				cont++ ;
+			} 
+			else 
+				if (a==8 && cont) // 8 = BackSpace
+				{
+					printf("\b \b") ;
+					cont-- ;
+					logr [cont] = '\0' ;
+				} /* if */
+		} while ( cont == 0 || (a != 13 && cont <= MEN_TAM_STRING-1) ) ; // 13 = Enter
+
+		logr[cont] = '\0' ;
+
+		printf("\n");
+
+	}
+
+/***********************************************************************
+*
 *  $FC Função: MEN_leComplemento
 *
 *  $ED Descrição da função
@@ -1087,10 +1418,71 @@
 	
 	}
 
+/***********************************************************************
+*
+*  $FC Função: MEN_leRG
+*
+*  $ED Descrição da função
+*	  Efetua a leitura do teclado permitindo digitar apenas numeros (1,2,3,4,5,6,7,8,9,0).
+*     Só finaliza a leitura após digitar, obrigatoriamente, os 9 dígitos correspondente ao número de identidade.		
+*
+***********************************************************************/
+/*Assertivas: 
+/			 
+***********************************************************************/
+	
+	int MEN_leRG ( void ) 
+	{
+		unsigned char a ;
+		char mat[MEN_TAM_RG] ; 
+		int cont = 0 ;
 
+		do
+		{
+			a = getch() ;
 
-	
-	
-	
-	
+			if ( isdigit(a) && cont < MEN_TAM_RG-1 )
+			{			
+				mat [cont] = (char) a ;
+				printf("%c", mat[cont]) ;
+				cont++ ;
+			} 
+			else
+				if (a==8 && cont) // 8 = BackSpace
+				{
+					printf("\b \b") ;
+					cont-- ;
+					mat[cont] = '\0' ;
+				} /* if */
+		} while ( cont < MEN_TAM_RG-1 || (a != 13 && cont == MEN_TAM_RG-1) ); // 13 = Enter
 
+		mat[cont] = '\0' ;
+
+		printf("\n") ;
+
+		return atoi(mat) ;
+	}
+
+/***********************************************************************
+*
+*  $FC Função: MEN_menuAnterior
+*
+*  $ED Descrição da função
+*	  		
+*
+***********************************************************************/
+/*Assertivas: 
+/			 
+***********************************************************************/
+
+	void MEN_menuAnterior (void) 
+	{
+		
+		printf("\nPressione qualquer tecla para voltar para o menu anterior.\n") ;
+		getch() ;
+		system("cls") ;
+		return ;
+		
+	}
+
+/********** Fim do módulo de implementação: MEN Menu **********/

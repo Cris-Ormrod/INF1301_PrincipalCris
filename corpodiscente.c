@@ -39,7 +39,7 @@ CDI_tpCondRet CDI_insere(char *nome, unsigned int mat, struct cpf *cpf, unsigned
 	if (a == NULL)	// verificando questão de memória
 		return CDI_CondRetFaltouMemoria;
 	else {
-		push_back(Corpo->Aluno, a);	// insiro no fim do corpo discente
+		push_back(Corpo->Aluno, (void *)a);	// insiro no fim do corpo discente
 		return CDI_CondRetOK;
 	}
 }

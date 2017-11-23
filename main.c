@@ -1,9 +1,9 @@
 /***************************************************************************
 *
-*  $MCD Módulo de definição: Módulo Menu
+*  $MCD Módulo de definição: Módulo Main
 *
-*  Arquivo gerado:              menu.c
-*  Letras identificadoras:      MEN
+*  Arquivo gerado:              main.c
+*  Letras identificadoras:      MAI
 *
 *  Nome da base de software:
 *  Arquivo da base de software:
@@ -48,6 +48,26 @@
 
 /***********************************************************************
 *
+*  $FC Função: menuAnterior
+*
+*  $ED Descrição da função
+*		Mostra o menu Administrativo.
+*
+***********************************************************************/
+/*Assertivas: Retorno da função: não há retorno.
+/			 Parâmentros: Estruturas de ponteiros.
+***********************************************************************/
+
+	void menuAnterior (void) 
+	{
+		printf("\nPressione qualquer tecla para voltar para o menu anterior.\n") ;
+		getch() ;
+		system("cls") ;
+	}
+
+
+/***********************************************************************
+*
 *  $FC Função: MEN_menuAluno.
 *
 *  $ED Descrição da função
@@ -58,26 +78,27 @@
 /			 Parâmentros: Estruturas de ponteiros.
 ***********************************************************************/
 
-	void menuAluno()
+	void menuAluno ( void )
 	{
-		int opcao = 0;
-		unsigned int matricula;
-		if(MEN_loginAluno(&matricula) == 1) // Se volta 1, ok.
+		int opcao = 0 ;
+		unsigned int matricula ;
+		if ( MEN_loginAluno(&matricula) == 1 ) // Se volta 1, ok.
 
-		do{
-			printf("\nMenu Aluno - Matricula: %d\n", matricula);
-			printf("\nDigite 0: sair");
-			printf("\nDigite 1: ver grade curricular");
+		do 
+		{
+			printf( "\nMenu Aluno - Matricula: %d\n", matricula ) ;
+			printf( "\nDigite 0: sair" ) ; 
+			printf( "\nDigite 1: ver grade curricular" ) ;
 			//printf("\nDigite 2: ver horarios");
 			//printf("\nDigite 3: ver nota");
 		
-			printf("\nDigite 2: modificar dados pessoais");
+			printf( "\nDigite 2: modificar dados pessoais" ) ;
 			//printf("\nDigite 6: cancelar disciplina");
 			//printf("\nDigite 7: trancar a faculdade");
-			printf("\nDigite 3: ver historico\n");
-			scanf("%d", &opcao);
+			printf( "\nDigite 3: ver historico\n" ) ;
+			opcao = MEN_leNumero() ;
 
-			switch(opcao)
+			switch ( opcao )
 			{
 				case 1:
 					system("cls");
@@ -87,7 +108,6 @@
 					system("cls");
 					MEN_modificaAluno();
 					break;
-
 				case 3:
 					system("cls");
 					HIS_printHistoricoCompleto(matricula);
@@ -128,7 +148,8 @@
 			//printf("\nDigite X: ver nota");
 			//printf("\nDigite X: ver turmas");
 			printf("\nDigite 5: modificar dados pessoais");
-			scanf("%d", &opcao);
+			
+			opcao = MEN_leNumero() ;
 
 			switch(opcao)
 			{	
@@ -178,116 +199,118 @@
 
 	void menuPAdministrativo()
 	{
-		int opcao = 0, mat;
+		int opcao = 0, mat ;
 
-		if(!MEN_loginAdministrativo()){
-			printf("\nErro no login\n");
-			return;
-		}
-		do{
-			printf("\n*********** MENU ADMINISTRATIVO ***********\n");
+		if ( !MEN_loginAdministrativo() )
+		{
+			printf( "\nErro no login\n" ) ;
+			return ;
+		} /* if */
+
+		do
+		{
+			printf( "\n*********** MENU ADMINISTRATIVO ***********\n" ) ;
 			
-			printf ("\nALUNO");
-			printf("\nDigite 1: Ver a relacao de alunos.");
-			printf("\nDigite 2: Para cadastrar um aluno.");
-			printf("\nDigite 3: Para modificar os dados pessoais de um aluno.");
-			printf("\nDigite 4: Para deletar um aluno.");
-			printf("\nDigite 5: Para apagar os dados de todos os alunos.");
+			printf( "\nALUNO" ) ;
+			printf( "\nDigite 1: Para exibir a relacao de alunos." ) ;
+			printf( "\nDigite 2: Para cadastrar um aluno." ) ;
+			printf( "\nDigite 3: Para modificar os dados pessoais de um aluno." ) ;
+			printf( "\nDigite 4: Para deletar um aluno." ) ;
+			printf( "\nDigite 5: Para apagar os dados de todos os alunos." ) ;
 			
-			printf ("\n\nPROFESSOR");
-			printf("\nDigite 6: Ver a relacao de professores.");
-			printf("\nDigite 7: Para cadastrar um professor.");
-			printf("\nDigite 8: Para modificar os dados pessoais de um professor.");
-			printf("\nDigite 9: Para deletar um professor.");
-			printf("\nDigite 10: Para apagar os dados de todos os professores.");
-			
+			printf( "\n\nPROFESSOR" ) ;
+			printf( "\nDigite 6: Para exibir a relacao de professores." ) ;
+			printf( "\nDigite 7: Para cadastrar um professor." ) ;
+			printf( "\nDigite 8: Para modificar os dados pessoais de um professor." ) ;
+			printf( "\nDigite 9: Para deletar um professor." ) ;
+			printf( "\nDigite 10: Para apagar os dados de todos os professores." ) ;
+
+			//printf( "\n\nGRADE CURRICULAR" ) ;
+			//printf( "\nDigite 11: Para acessar o menu da Grade Curricular." ) ;
+
 			//printf("\nDigite 9: deletar sala");
 			//printf("\nDigite 10: adicionar sala");
-			//printf("\nDigite 11: deletar turma");
+			
 			//printf("\nDigite 12: adicionar turma");
 			//printf("\nDigite 13: modificar grade");
 			//printf("\nDigite 4: ver criterio de aprovacao");
 			//printf("\nDigite 11: ver grade curricular\n\n");
 
-			printf("\n\nDigite 0: Para sair do Menu Administrativo.\n\n");
+			printf( "\n\nDigite 0: Para sair do Menu Administrativo.\n\n" ) ;
 
-			scanf("%d", &opcao);
+			opcao = MEN_leNumero() ;
+			system( "cls" ) ;
 
-			switch(opcao)
+			switch( opcao )
 			{
 				case 1:
 					//mostra relação de alunos
-					system("cls");
-					CDI_imprime();
-					break;
+					printf( "*********** RELACAO DE ALUNOS CADASTRADOS ***********\n\n" ) ;
+					if ( CDI_imprime() != CDI_CondRetOK ) 
+					{
+						printf( "Nenhum professor cadastrado!\n\n" ) ; 
+					} /* if */
+					menuAnterior() ;
+					break ;
 				case 2:
 					//adiciona um aluno
-					system("cls");
-					MEN_adicionaAluno();
-					break;
+					MEN_adicionaAluno() ;
+					break ;
 				case 3:
 					//altera os dados de um aluno
-					system("cls");
-					MEN_modificaAluno();
-					break;
+					MEN_modificaAluno() ; 
+					break ;
 				case 4:
 					//remove um aluno
-					system("cls");
-					printf("\nDigite a matricula: \n");
-					scanf("%d", &mat);
-					CDI_remove(mat);
+					printf( "\nDigite a matricula: \n" ) ;
+					mat = MEN_leMatricula() ;
+					CDI_remove( mat ) ;
+					menuAnterior() ;
 					break;
 				case 5:
 					//remove todos os alunos
-					system("cls");
-					CDI_limpa();
-					break;
+					CDI_limpa() ;
+					break ;
 				case 6:
 					//mostra relação de professores
-					system("cls");
-					if(CDO_mostraTodos()!=CDO_CondRetOk) 
-						printf("Nenhum professor cadastrado!\n\n");
-					break;
+					printf( "*********** RELACAO DE PROFESSORES CADASTRADOS ***********\n\n" ) ;
+					if ( CDO_mostraTodos() != CDO_CondRetOk ) 
+					{
+						printf( "Nenhum professor cadastrado!\n\n" ) ; 
+					} /* if */
+					menuAnterior() ;
+					break ;
 				case 7:
 					//adiciona um professor
-					system("cls");
-					MEN_adicionaProfessor();
-					break;
+					MEN_adicionaProfessor() ;
+					break ;
 				case 8:
 					//altera os dados de um professor
-					system("cls");
-					MEN_modificaProfessor();
-					break;
+					MEN_modificaProfessor() ;
+					break ;
 				case 9:
 					//remove um professor
-					system("cls");
-					printf("\nDigite a matricula: \n");
-					scanf("%d", &mat);
-					if(CDO_buscaPorMatricula(mat)!=CDO_CondRetOk)
-					{
-						printf("Professor nao encontrado, nao ha professor com esta matricula.");
-						break;
-					}
-					CDO_mostraAtual();
-					CDO_retira();
-					break;
+					MEN_removeProfessor() ;
+					break ;
 				case 10:
 					//remove todos os professores
-					CDO_limpa();
-					break;
-	/*			case 11:
-					MEN_menuGradeCurricular();
-					break;*/
+					MEN_removeTodosProfessores() ;
+					break ;
+				//case 11:
+				//	MEN_menuGradeCurricular() ;
+				//	break ;
 				default:
-					if(opcao)
+					if ( opcao )
 					{
-						system("cls");
-						printf("\n\nOPCAO INVALIDA! Digite o numero de algumas das opcoes abaixo. \n\n");
-					}
-					break;
+						system( "cls" ) ;
+						printf( "\n\nOPCAO INVALIDA! Digite o numero de algumas das opcoes abaixo. \n\n" ) ;
+					} /* if */
+					break ;
 			}
-		}while(opcao);
-		system("cls");
+
+		} while ( opcao ) ;
+
+		system ( "cls" ) ; 
 	}
 
 /***********************************************************************
@@ -321,55 +344,60 @@
 	}
 
 
-	int main(void){
-		int opcao = 0;
-		CDO_cria();
-		CDI_cria();
-		GRC_cria();
 
-		exibeTelaInicial();
+	int main ( void )
+	{
+		int opcao = 0 ;
+		
+		CDO_cria() ;
+		CDI_cria() ;
+		GRC_cria() ;
 
-		do{
-			printf("\n*********** SISTEMA ACADEMICO ***********\n");
-			printf("\nDigite 0: Para sair");
-			printf("\nDigite 1: Ir para Menu do Aluno");
-			printf("\nDigite 2: Ir para Menu do Professor");
-			printf("\nDigite 3: Ir para Menu Administrativo\n\n");
-			scanf("%d", &opcao);
+		exibeTelaInicial() ;
 
-			switch(opcao)
+		do
+		{
+			printf( "\n*********** SISTEMA ACADEMICO ***********\n" ) ;
+			printf( "\nDigite 1: Para acessar Menu do Aluno" ) ;
+			printf("\nDigite 2: Para acessar Menu do Professor" ) ;
+			printf( "\nDigite 3: Para acessar Menu Administrativo" ) ;
+			printf( "\n\nDigite 0: Para sair\n\n" ) ;
+			opcao = MEN_leNumero() ;
+
+			switch ( opcao )
 			{
 				case 0:
-					system("cls");
-					printf("\n\nFechando programa...\n\n");
-					CDO_libera();
-					GRC_libera();
-					exit(0);
-					break;
+					system( "cls" ) ;
+					printf( "\n\nFechando programa...\n\n" ) ;
+					CDO_libera() ;
+					GRC_libera() ;
+					exit(0) ;
+					break ;
 				case 1:
-					system("cls");
+					system( "cls" ) ;
 					// Ir menu Aluno. Area onde o aluno realizar o menu
-					menuAluno();
-					break;
+					menuAluno() ;
+					break ;
 				case 2:
-					system("cls");
-					menuProfessor();
+					system( "cls" ) ;
+					menuProfessor() ;
 					// Ir menu Professor. Area onde o professor realizar o menu
-					break;
+					break ;
 				case 3:
-					system("cls");
-					menuPAdministrativo();
+					system( "cls" ) ;
+					menuPAdministrativo() ;
 					// Ir menu Administrado. Area onde o administrador realizar o menu
-					break;
+					break ;
 				default:
-					if(opcao)
+					if( opcao )
 					{
-						system("cls");
-						printf("\n\nOPCAO INVALIDA!!!!!\n\n");
-					}
-					break;
+						system( "cls" ) ;
+						printf( "\n\nOPCAO INVALIDA!!!!!\n\n" ) ;
+					} /* if */
+					break ;
 			}
-		}while(opcao);
-		return 0;
+		} while ( opcao ) ;
+		
+		return 0 ;
 	}
 
